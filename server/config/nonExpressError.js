@@ -1,10 +1,10 @@
 function handleNonExpressError() {
 	process.on("uncaughtException", (err) => {
-		console.log(`UNCAUGHT ERROR: ${err.message}`);
+		console.log("UNCAUGHT ERROR:", err);
 	});
 
 	process.on("unhandledRejection", (err) => {
-		console.log(`UNHANDLED REJECTION: ${err.message}`);
+		console.log("UNHANDLED REJECTION:", err);
 	});
 }
 
