@@ -1,0 +1,26 @@
+.ISBNInput {
+	position: relative;
+}
+
+.ISBNInput .ISBNClose {
+	visibility: hidden;
+	position: absolute;
+	right: 1rem;
+	top: 50%;
+	transform: translateY(-50%);
+	cursor: pointer;
+	transition: visibility 0.2s, color 0.2s;
+	font-weight: 500;
+}
+
+.ISBNInput .ISBNClose::after {
+	content: "X";
+}
+
+.ISBNInput:hover .ISBNClose {
+	visibility: visible;
+}
+
+.ISBNInput:hover .ISBNClose:hover {
+	color: rgb(248, 71, 71);
+}
