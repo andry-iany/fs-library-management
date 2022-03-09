@@ -16,6 +16,7 @@ async function startServer() {
 	// routes
 	app.use("/users", require("./routes/users"));
 	app.use("/books", require("./routes/books"));
+	app.use("/rental", require("./routes/rental"));
 
 	// 404
 	app.use(require("./routes/404"));

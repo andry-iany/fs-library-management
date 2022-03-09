@@ -8,7 +8,7 @@ router.route("/").get(booksController.getBooks);
 
 router
 	.route("/add")
-	.post(validateRequest("nom", "quantite", "categorie", "ISBN"))
+	.post(validateRequest("nom", "categorie", "ISBN"))
 	.post(booksController.addBook);
 
 module.exports = router;

@@ -14,13 +14,18 @@ function validateRequest(...requiredProperties) {
 function buildNonEmptyObject(requestBody, requiredProperties) {
 	const object = {};
 	for (let property of requiredProperties) {
-		addPropToObjectIfValueDefined(object, property, requestBody?.[property]);
+		addPropToObjectIfValueDefinedOrNonEmptyArray(
+			object,
+			property,
+			requestBody?.[property]
+		);
 	}
 	return object;
 }
 
-function addPropToObjectIfValueDefined(object, property, value) {
-	if (isUndefined(value)) throw new Error("");
+function addPropToObjectIfValueDefinedOrNonEmptyArray(object, property, value) {
+	if (value === undefined) throw new Error("");
+	if (Array.isArray(value) && value.length === 0) throw new Error("");
 	object[property] = value;
 }
 
