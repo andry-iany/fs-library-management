@@ -39,7 +39,7 @@ export default function FormAddUser() {
 
 			<Alert
 				variant={data ? "success" : "danger"}
-				text={data ? "Membre créer avec succès." : error}
+				text={data ? "Membre créé avec succès." : error}
 				show={showAlert}
 				closeAlert={() => setShowAlert(false)}
 			/>

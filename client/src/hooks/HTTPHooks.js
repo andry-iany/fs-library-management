@@ -25,4 +25,26 @@ function usePost() {
 	return { data, error, isPending, makeRequest };
 }
 
-export { usePost };
+function useGet() {
+	const [data, setData] = useState(null);
+	const [error, setError] = useState(null);
+	const [isPending, setIsPending] = useState(false);
+
+	const makeRequest = async (path) => {
+		setIsPending(() => true);
+		try {
+			const result = await axios.get(apiRoot + path);
+			setIsPending(() => false);
+			setError(() => null);
+			setData(() => result);
+		} catch (err) {
+			setIsPending(() => false);
+			setData(() => null);
+			setError(() => err?.response?.data?.error || "Une erreur est survenue.");
+		}
+	};
+
+	return { data, error, isPending, makeRequest };
+}
+
+export { useGet, usePost };
