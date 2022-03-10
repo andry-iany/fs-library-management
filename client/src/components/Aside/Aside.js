@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 export default function Aside() {
 	return (
 		<ShadowedBox className="h-100">
-			<ListGroup variant="flush">
+			<ListGroup>
 				<ListItemAction to="/users/register">Ajouter un membre</ListItemAction>
 				<ListItemAction to="/rental/">Details des emprunts</ListItemAction>
 				<ListItemAction to="/rental/rent">Emprunter un livre</ListItemAction>
@@ -20,7 +20,7 @@ function ListItemAction(props) {
 		<NavLink {...getListItemActionProps(props)}>
 			<ListGroup.Item
 				action
-				className="one-line-text"
+				className="one-line-text border-0"
 				style={{ backgroundColor: "inherit", color: "inherit" }}
 			>
 				{props.children}
@@ -33,8 +33,8 @@ function getListItemActionProps(props) {
 	return {
 		...props,
 		className: (navData) => {
-			return `text-decoration-none 
-      ${navData.isActive ? "bg-primary text-white" : "text-secondary"} 
+			return `text-decoration-none aside-navlink
+      ${navData.isActive ? "bg-primary-cust text-white" : "text-secondary"} 
       ${props.className || ""}`;
 		},
 	};

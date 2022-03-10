@@ -51,7 +51,9 @@ export default function FormAddUser() {
 			</Form.Group>
 
 			<div className="mt-4 d-flex justify-content-center">
-				<Button type="submit">Soumettre</Button>
+				<Button type="submit" className="btn-primary-cust">
+					Soumettre
+				</Button>
 			</div>
 		</Form>
 	);

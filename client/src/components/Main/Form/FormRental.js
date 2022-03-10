@@ -28,7 +28,9 @@ export default function FormRental({ title, handleSubmit }) {
 			</div>
 
 			<div className="d-flex justify-content-center">
-				<Button type="submit">Soumettre</Button>
+				<Button type="submit" className="btn-primary-cust">
+					Soumettre
+				</Button>
 			</div>
 		</Form>
 	);

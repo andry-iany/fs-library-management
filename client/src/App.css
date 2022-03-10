@@ -1,11 +1,32 @@
 .App {
 	height: 100vh;
 	overflow: auto;
-	background-color: rgb(249, 171, 89);
 }
 
 .one-line-text {
 	overflow-x: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
+}
+
+.bg-primary-cust {
+	background-color: #f9ab59 !important;
+}
+.text-primary-cust {
+	color: #ff8a0d !important;
+}
+.border-bottom-cust {
+	border-bottom: 1px solid #f9ab59 !important;
+}
+.btn-primary-cust {
+	background-color: #ff8a0d !important;
+	border-color: #f9ab59 !important;
+	color: #fff;
+}
+.btn-primary-cust:hover {
+	background-color: #f3830b !important;
+}
+
+.aside-navlink:not(.bg-primary-cust):hover {
+	background-color: #ffe3c5 !important;
 }
