@@ -1,3 +1,11 @@
 .App {
 	height: 100vh;
+	overflow: auto;
+	background-color: rgb(249, 171, 89);
+}
+
+.one-line-text {
+	overflow-x: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }

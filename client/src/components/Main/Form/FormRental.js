@@ -1,7 +1,7 @@
 import { Form, Button } from "react-bootstrap";
 import { useEffect, useRef } from "react";
 import PlusCircle from "./PlusCircle";
-import FormTitle from "./FormTitle";
+import { SectionTitle } from "../../shared";
 import "./FormRental.css";
 
 export default function FormRental({ title, handleSubmit }) {
@@ -16,8 +16,8 @@ export default function FormRental({ title, handleSubmit }) {
 	}, []);
 
 	return (
-		<Form className="position-relative" onSubmit={handleSubmit}>
-			<FormTitle text={title} />
+		<Form onSubmit={handleSubmit}>
+			<SectionTitle text={title} />
 
 			{getFormForMemberID()}
 
