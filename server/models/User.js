@@ -12,7 +12,10 @@ const UserSchema = new mongoose.Schema({
 	adresse: AddressSchema,
 	CIN: {
 		type: Number,
-		length: 12,
+		validate: {
+			validator: (value) => String(value).length === 12,
+			message: "Donnée invalide",
+		},
 		required: true,
 		unique: true,
 		select: false,

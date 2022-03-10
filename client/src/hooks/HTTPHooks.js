@@ -18,7 +18,7 @@ function usePost() {
 		} catch (err) {
 			setIsPending(() => false);
 			setData(() => null);
-			setError(() => err?.response.data.error || "Une erreur est survenue.");
+			setError(() => err?.response?.data?.error || "Une erreur est survenue.");
 		}
 	};
 
