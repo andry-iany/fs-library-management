@@ -22,6 +22,11 @@ async function getRentalByUserId(req, res, next) {
 
 async function rentBook(req, res, next) {
 	try {
+		if (!mongoose.isValidObjectId(req.validBody.userId))
+			return next(
+				new ErrorResponse("L'utilisateur spécifié n'existe pas.", 400)
+			);
+
 		await verifyIfBooksAreAvailable(req.validBody.ISBN);
 
 		const existingRental = await Rental.findOne({
@@ -56,6 +61,9 @@ async function verifyIfBooksAreAvailable(ISBNs) {
 }
 
 async function returnBook(req, res, next) {
+	if (!mongoose.isValidObjectId(req.validBody.userId))
+		return next(new ErrorResponse("L'utilisateur spécifié n'existe pas.", 400));
+
 	let rental = await Rental.findOne({
 		userId: req.validBody.userId,
 	});
