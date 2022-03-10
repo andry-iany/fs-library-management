@@ -1,18 +1,36 @@
 import { SectionTitle } from "../../shared";
 import { Button, Form } from "react-bootstrap";
 import Alert from "../Alert";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePost } from "../../../hooks/HTTPHooks";
 
 export default function FormAddUser() {
 	const [showAlert, setShowAlert] = useState(false);
 	const { makeRequest, data, isPending, error } = usePost();
+	const [alertTimeout, setAlertTimeout] = useState(null);
+
+	useEffect(() => {
+		if (data) clearForm();
+	}, [data]);
+
+	useEffect(() => {
+		return () => clearTimeout(alertTimeout);
+	});
+
+	const hideAlertAfterTimeout = () => {
+		const timeout = setTimeout(() => {
+			setShowAlert(() => false);
+			setAlertTimeout(() => null);
+		}, 5000);
+		setAlertTimeout(timeout);
+	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const formData = getFormData(e.target);
 		await makeRequest("/users/register", formData);
 		setShowAlert(() => true);
+		hideAlertAfterTimeout();
 	};
 
 	return (
@@ -48,6 +66,13 @@ function getFormData(form) {
 			ville: form.ville.value,
 		},
 	};
+}
+
+function clearForm() {
+	const form = document.querySelector("form");
+	Array.from(form.querySelectorAll("input")).forEach(
+		(input) => (input.value = "")
+	);
 }
 
 function getFormGroups() {

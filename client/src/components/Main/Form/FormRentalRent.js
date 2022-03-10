@@ -1,10 +1,27 @@
 import FormRental from "./FormRental";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePost } from "../../../hooks/HTTPHooks";
 
 export default function FormRentalRent() {
 	const [showAlert, setShowAlert] = useState(false);
 	const { makeRequest, error, data, isPending } = usePost();
+	const [alertTimeout, setAlertTimeout] = useState(null);
+
+	useEffect(() => {
+		if (data) clearForm();
+	}, [data]);
+
+	useEffect(() => {
+		return () => clearTimeout(alertTimeout);
+	});
+
+	const hideAlertAfterTimeout = () => {
+		const timeout = setTimeout(() => {
+			setShowAlert(() => false);
+			setAlertTimeout(() => null);
+		}, 5000);
+		setAlertTimeout(timeout);
+	};
 
 	const alertProps = {
 		show: showAlert,
@@ -18,6 +35,7 @@ export default function FormRentalRent() {
 		const formData = getFormData(e.target);
 		await makeRequest("/rental/rent", formData);
 		setShowAlert(() => true);
+		hideAlertAfterTimeout();
 	};
 
 	return (
@@ -39,4 +57,12 @@ function getFormData(form) {
 		userId: form.userId.value,
 		ISBN: ISBNs,
 	};
+}
+
+function clearForm() {
+	const form = document.querySelector("form");
+	form.userId.value = "";
+	Array.from(form.querySelectorAll(".ISBNInput input")).forEach(
+		(input) => (input.value = "")
+	);
 }
