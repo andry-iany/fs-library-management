@@ -35,7 +35,7 @@ export default function FormRental({
 			</div>
 
 			<div className="d-flex justify-content-center">
-				<Button type="submit" className="btn-primary-cust">
+				<Button type="submit" className="btn-primary-cust" disabled={isPending}>
 					{isPending ? "Patientez..." : "Soumettre"}
 				</Button>
 			</div>
