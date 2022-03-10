@@ -5,7 +5,12 @@ import PlusCircle from "./PlusCircle";
 import { SectionTitle } from "../../shared";
 import "./FormRental.css";
 
-export default function FormRental({ title, handleSubmit, alertProps }) {
+export default function FormRental({
+	title,
+	handleSubmit,
+	alertProps,
+	isPending,
+}) {
 	const ISBNGroup = useRef();
 
 	useEffect(() => {
@@ -30,8 +35,8 @@ export default function FormRental({ title, handleSubmit, alertProps }) {
 			</div>
 
 			<div className="d-flex justify-content-center">
-				<Button type="submit" className="btn-primary-cust">
-					Soumettre
+				<Button type="submit" className="btn-primary-cust" disabled={isPending}>
+					{isPending ? "Patientez..." : "Soumettre"}
 				</Button>
 			</div>
 		</Form>

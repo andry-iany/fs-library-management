@@ -6,8 +6,8 @@ export default function Aside() {
 	return (
 		<ShadowedBox className="h-100">
 			<ListGroup>
-				<ListItemAction to="/users/register">Ajouter un membre</ListItemAction>
 				<ListItemAction to="/rental/">Details des emprunts</ListItemAction>
+				<ListItemAction to="/users/register">Ajouter un membre</ListItemAction>
 				<ListItemAction to="/rental/rent">Emprunter un livre</ListItemAction>
 				<ListItemAction to="/rental/return">Retourner un livre</ListItemAction>
 			</ListGroup>
