@@ -5,7 +5,7 @@ import RentalDetail from "./RentalDetail";
 
 export default function Main() {
 	return (
-		<ShadowedBox className="h-100">
+		<ShadowedBox className="h-100 position-relative">
 			<Routes>
 				<Route path="/rental" element={<RentalDetail />} />
 				<Route path="/rental/rent" element={<FormRentalRent />} />

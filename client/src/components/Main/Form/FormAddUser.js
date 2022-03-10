@@ -1,10 +1,22 @@
 import { SectionTitle } from "../../shared";
 import { Button, Form } from "react-bootstrap";
+import Alert from "../Alert";
+import { useState } from "react";
 
 export default function FormAddUser() {
+	const [showAlert, setShowAlert] = useState(true);
+
 	return (
 		<Form onSubmit={handleSubmit}>
 			<SectionTitle text="Ajouter un membre" />
+
+			<Alert
+				variant="danger"
+				text="this is the content"
+				show={showAlert}
+				closeAlert={() => setShowAlert(false)}
+			/>
+
 			<Form.Group controlId="nom" className="mb-3">
 				<Form.Label>Nom du nouveau membre:</Form.Label>
 				<Form.Control

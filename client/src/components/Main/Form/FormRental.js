@@ -1,10 +1,11 @@
 import { Form, Button } from "react-bootstrap";
 import { useEffect, useRef } from "react";
+import Alert from "../Alert";
 import PlusCircle from "./PlusCircle";
 import { SectionTitle } from "../../shared";
 import "./FormRental.css";
 
-export default function FormRental({ title, handleSubmit }) {
+export default function FormRental({ title, handleSubmit, alertProps }) {
 	const ISBNGroup = useRef();
 
 	useEffect(() => {
@@ -18,6 +19,7 @@ export default function FormRental({ title, handleSubmit }) {
 	return (
 		<Form onSubmit={handleSubmit}>
 			<SectionTitle text={title} />
+			<Alert {...alertProps} />
 
 			{getFormForMemberID()}
 
