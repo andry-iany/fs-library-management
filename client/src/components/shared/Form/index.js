@@ -1,3 +1,3 @@
-import Form from "./Form";
+import FormRental from "./FormRental";
 
-export default Form;
+export { FormRental };
