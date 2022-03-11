@@ -1,26 +1,15 @@
 const { Book, Rental } = require("../models");
-const { formatResponse, ErrorResponse } = require("../utils");
+const { formatResponse, ErrorResponse, paginationUtils } = require("../utils");
 const mongoose = require("mongoose");
 
+const { getPageAndLimitIfValid, getMaxPage } = paginationUtils;
 const { formatResponseSuccess, formatResponseSuccessWithPagination } =
 	formatResponse;
-
-function getPageAndLimitIfValid(req) {
-	const { _limit, _page } = req.query;
-	if (!isNaN(parseInt(_limit)) && !isNaN(parseInt(_page))) {
-		return { _limit: parseInt(_limit), _page: parseInt(_page) };
-	}
-	return null;
-}
-
-function getMaxPage(docsCount, limit) {
-	return Math.ceil(docsCount / limit);
-}
 
 async function getAllRentals(req, res, next) {
 	let rentals = null;
 
-	const pageAndLimit = getPageAndLimitIfValid(req);
+	const pageAndLimit = getPageAndLimitIfValid(req.query);
 	if (pageAndLimit) {
 		rentals = await Rental.find({})
 			.skip((pageAndLimit._page - 1) * pageAndLimit._limit)
