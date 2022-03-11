@@ -2,11 +2,44 @@ const { Book, Rental } = require("../models");
 const { formatResponse, ErrorResponse } = require("../utils");
 const mongoose = require("mongoose");
 
-const formatResponseSuccess = formatResponse.formatResponseSuccess;
+const { formatResponseSuccess, formatResponseSuccessWithPagination } =
+	formatResponse;
+
+function getPageAndLimitIfValid(req) {
+	const { _limit, _page } = req.query;
+	if (!isNaN(parseInt(_limit)) && !isNaN(parseInt(_page))) {
+		return { _limit: parseInt(_limit), _page: parseInt(_page) };
+	}
+	return null;
+}
+
+function getMaxPage(docsCount, limit) {
+	return Math.ceil(docsCount / limit);
+}
 
 async function getAllRentals(req, res, next) {
-	const rentals = await Rental.find({});
-	res.status(200).json(formatResponseSuccess(rentals));
+	let rentals = null;
+
+	const pageAndLimit = getPageAndLimitIfValid(req);
+	if (pageAndLimit) {
+		rentals = await Rental.find({})
+			.skip((pageAndLimit._page - 1) * pageAndLimit._limit)
+			.limit(pageAndLimit._limit);
+
+		const docsCount = await Rental.countDocuments();
+		res
+			.status(200)
+			.json(
+				formatResponseSuccessWithPagination(
+					rentals,
+					pageAndLimit._page,
+					getMaxPage(docsCount, pageAndLimit._limit)
+				)
+			);
+	} else {
+		rentals = await Rental.find({});
+		res.status(200).json(formatResponseSuccess(rentals));
+	}
 }
 
 async function getRentalByUserId(req, res, next) {

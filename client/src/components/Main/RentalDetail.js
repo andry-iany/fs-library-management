@@ -6,7 +6,8 @@ import { useEffect } from "react";
 export default function RentalDetail() {
 	const { data, error, isPending, makeRequest } = useGet();
 	useEffect(() => {
-		makeRequest("/rental"); // don't await for it
+		makeRequest("/rental"); // don't wait for it
+		// eslint-disable-next-line
 	}, []);
 
 	const getRows = () => {
