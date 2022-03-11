@@ -1,8 +1,7 @@
 import { Form, Button } from "react-bootstrap";
 import { useEffect, useRef } from "react";
-import Alert from "../Alert";
 import Plus from "../../../assets/plus.svg";
-import { Icon, SectionTitle } from "../../shared";
+import { Alert, Icon, SectionTitle } from "../../shared";
 import "./FormRental.css";
 
 export default function FormRental({

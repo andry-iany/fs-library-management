@@ -1,16 +1,26 @@
-import { Header, Aside, Main } from "../components";
 import { Container, Row, Col } from "react-bootstrap";
+import { Header, Aside } from "../components";
+import { ShadowedBox } from "../components/shared";
+import { Outlet } from "react-router-dom";
 
 function Home() {
 	return (
 		<Container className="d-flex flex-column h-100">
-			<Header />
+			<ShadowedBox className="mb-5">
+				<Header />
+			</ShadowedBox>
+
 			<Row className="h-100 gap-3">
 				<Col md="4">
-					<Aside />
+					<ShadowedBox className="h-100">
+						<Aside />
+					</ShadowedBox>
 				</Col>
+
 				<Col>
-					<Main />
+					<ShadowedBox className="h-100">
+						<Outlet />
+					</ShadowedBox>
 				</Col>
 			</Row>
 		</Container>

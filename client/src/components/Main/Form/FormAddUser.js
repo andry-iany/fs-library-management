@@ -1,6 +1,5 @@
-import { SectionTitle } from "../../shared";
+import { SectionTitle, Alert } from "../../shared";
 import { Button, Form } from "react-bootstrap";
-import Alert from "../Alert";
 import { useState, useEffect } from "react";
 import { usePost } from "../../../hooks/HTTPHooks";
 
