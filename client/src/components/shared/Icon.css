@@ -1,0 +1,20 @@
+.icon-circle {
+	height: 2rem;
+	width: 2rem;
+	border-radius: 50%;
+	border: 2px solid #ffbb73;
+	background-color: #fff1e2;
+	outline: none;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.icon-circle:disabled {
+	border-color: #ffd9af;
+	cursor: default;
+	opacity: 0.5;
+}
+
+.icon-circle:not(:disabled):hover {
+	background-color: #ffe1c0;
+}

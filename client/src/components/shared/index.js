@@ -1,4 +1,6 @@
 import SectionTitle from "./SectionTitle";
 import ShadowedBox from "./ShadowedBox";
+import PaginationControl from "./PaginationControl";
+import Icon from "./Icon";
 
-export { SectionTitle, ShadowedBox };
+export { Icon, SectionTitle, ShadowedBox, PaginationControl };

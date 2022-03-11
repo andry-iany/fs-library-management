@@ -1,8 +1,8 @@
 import { Form, Button } from "react-bootstrap";
 import { useEffect, useRef } from "react";
 import Alert from "../Alert";
-import PlusCircle from "./PlusCircle";
-import { SectionTitle } from "../../shared";
+import Plus from "../../../assets/plus.svg";
+import { Icon, SectionTitle } from "../../shared";
 import "./FormRental.css";
 
 export default function FormRental({
@@ -30,8 +30,8 @@ export default function FormRental({
 
 			{getFormForISBNGroup(ISBNGroup)}
 
-			<div className="mt-3 mb-4">
-				<PlusCircle onClick={handleAddISBNInput} className="mx-auto" />
+			<div className="mt-4 mb-5 text-center">
+				<Icon src={Plus} onClick={handleAddISBNInput} className="mx-auto" />
 			</div>
 
 			<div className="d-flex justify-content-center">
