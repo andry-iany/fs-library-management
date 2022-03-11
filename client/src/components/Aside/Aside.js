@@ -5,6 +5,7 @@ export default function Aside() {
 	return (
 		<ListGroup>
 			<ListItemAction to="/rental/">Details des emprunts</ListItemAction>
+			<ListItemAction to="/users/">Liste des membres</ListItemAction>
 			<ListItemAction to="/users/register">Ajouter un membre</ListItemAction>
 			<ListItemAction to="/rental/rent">Emprunter un livre</ListItemAction>
 			<ListItemAction to="/rental/return">Retourner un livre</ListItemAction>

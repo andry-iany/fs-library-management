@@ -3,6 +3,7 @@ import { Header, Aside } from "../components";
 import { ShadowedBox } from "../components/shared";
 import { Navigate, Outlet, Route } from "react-router-dom";
 import RentalDetail from "../components/Main/RentalDetail";
+import UsersDetail from "../components/Main/UsersDetail";
 import {
 	FormRentalReturn,
 	FormRentalRent,
@@ -37,10 +38,11 @@ function getRoutesForHome() {
 	return (
 		<Route path="/" element={<Home />}>
 			<Route index element={<Navigate to="/rental/" />} />
-			<Route path="/rental/" element={<RentalDetail />} />
-			<Route path="/rental/rent" element={<FormRentalRent />} />
-			<Route path="/rental/return" element={<FormRentalReturn />} />
-			<Route path="/users/register" element={<FormAddUser />} />
+			<Route path="rental/" element={<RentalDetail />} />
+			<Route path="rental/rent" element={<FormRentalRent />} />
+			<Route path="rental/return" element={<FormRentalReturn />} />
+			<Route path="users/" element={<UsersDetail />} />
+			<Route path="users/register" element={<FormAddUser />} />
 		</Route>
 	);
 }
