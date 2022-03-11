@@ -3,7 +3,6 @@ import { getFormGroups } from "../components/shared/formUtils";
 import { Alert, SectionTitle, ShadowedBoxCentered } from "../components/shared";
 import { Form, Button } from "react-bootstrap";
 import { usePost } from "../hooks/HTTPHooks";
-import { useNavigate } from "react-router-dom";
 
 const groups = [
 	{
@@ -31,7 +30,6 @@ const groups = [
 export default function Login() {
 	const { data, error, isPending, makeRequest } = usePost();
 	const [showAlert, setShowAlert] = useState(false);
-	const navigate = useNavigate();
 
 	useEffect(() => {
 		let alertTimeout = null;
@@ -40,8 +38,8 @@ export default function Login() {
 			setShowAlert(() => true);
 			alertTimeout = setTimeout(() => setShowAlert(() => false), 5000);
 		} else if (data) {
-			alert("logged in successfully");
-			navigate("/");
+			localStorage.setItem("authToken", data.data.data);
+			window.location.reload();
 		}
 
 		return () => clearTimeout(alertTimeout);
