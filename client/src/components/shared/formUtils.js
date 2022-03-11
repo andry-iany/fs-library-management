@@ -3,16 +3,18 @@ import { Form } from "react-bootstrap";
 /**
  * it operates on data like
  * ```js
- * {
-      label: "...",
-      formControls: [
-        {
-          name: "...",
-          placeholder: "...",
-          type: "...",
-        },
-      ],
- * },
+ * [
+    {
+        label: "...",
+        formControls: [
+          {
+            name: "...",
+            placeholder: "...",
+            type: "...",
+          },
+        ],
+    }
+ *],
  * ```
  * @param {*} groups 
  * @returns 
