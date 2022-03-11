@@ -2,6 +2,9 @@
 	height: 100vh;
 	overflow: auto;
 }
+.App > .container {
+	min-width: 1040px;
+}
 
 .one-line-text {
 	overflow-x: hidden;

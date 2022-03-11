@@ -38,7 +38,7 @@ export default function RentalDetail() {
 				<tbody>{data && getRows()}</tbody>
 			</Table>
 
-			{isPending && <div>Chargement...</div>}
+			{!data && isPending && <div>Chargement...</div>}
 
 			{error && <div>{error}</div>}
 
