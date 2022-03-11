@@ -40,6 +40,7 @@ export default function Login() {
 			setShowAlert(() => true);
 			alertTimeout = setTimeout(() => setShowAlert(() => false), 5000);
 		} else if (data) {
+			alert("logged in successfully");
 			navigate("/");
 		}
 
@@ -83,7 +84,7 @@ export default function Login() {
 
 function getFormData(form) {
 	return {
-		name: form.name.value,
+		email: form.email.value,
 		password: form.password.value,
 	};
 }
