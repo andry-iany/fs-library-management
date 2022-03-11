@@ -1,3 +1,8 @@
+a,
+a:active {
+	color: inherit !important;
+}
+
 .App {
 	height: 100vh;
 	overflow: auto;
@@ -30,6 +35,12 @@
 	background-color: #f3830b !important;
 }
 
-.aside-navlink:not(.bg-primary-cust):hover {
+.aside-navlink:not(.bg-primary-cust):hover,
+.dropdown-item:hover {
 	background-color: #ffe3c5 !important;
+}
+
+.dropdown-item:active {
+	background-color: #f9ab59 !important;
+	color: #fff !important;
 }
