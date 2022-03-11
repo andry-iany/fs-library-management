@@ -1,6 +1,7 @@
 import FormRental from "./FormRental";
 import { useEffect, useState } from "react";
 import { usePost } from "../../../hooks/HTTPHooks";
+import { clearAllFormInputs } from "../../shared/formUtils";
 
 export default function FormRentalRent() {
 	const [showAlert, setShowAlert] = useState(false);
@@ -8,7 +9,7 @@ export default function FormRentalRent() {
 	const [alertTimeout, setAlertTimeout] = useState(null);
 
 	useEffect(() => {
-		if (data) clearForm();
+		if (data) clearAllFormInputs();
 	}, [data]);
 
 	useEffect(() => {
@@ -57,12 +58,4 @@ function getFormData(form) {
 		userId: form.userId.value,
 		ISBN: ISBNs,
 	};
-}
-
-function clearForm() {
-	const form = document.querySelector("form");
-	form.userId.value = "";
-	Array.from(form.querySelectorAll(".ISBNInput input")).forEach(
-		(input) => (input.value = "")
-	);
 }
