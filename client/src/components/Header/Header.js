@@ -1,6 +1,6 @@
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 
-function Header() {
+export default function Header() {
 	return (
 		<Navbar className="d-flex justify-content-between align-items-end  p-0">
 			<Navbar.Brand>
@@ -9,11 +9,16 @@ function Header() {
 			</Navbar.Brand>
 			<Nav className="text-primary-cust">
 				<NavDropdown title="Option" className="h5" align="end">
-					<NavDropdown.Item href="#action/3.1">Se déconnecter</NavDropdown.Item>
+					<NavDropdown.Item onClick={handleLogout}>
+						Se déconnecter
+					</NavDropdown.Item>
 				</NavDropdown>
 			</Nav>
 		</Navbar>
 	);
 }
 
-export default Header;
+function handleLogout(e) {
+	localStorage.removeItem("authToken");
+	window.location.reload();
+}
