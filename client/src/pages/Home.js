@@ -1,7 +1,13 @@
 import { Container, Row, Col } from "react-bootstrap";
 import { Header, Aside } from "../components";
 import { ShadowedBox } from "../components/shared";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet, Route } from "react-router-dom";
+import RentalDetail from "../components/Main/RentalDetail";
+import {
+	FormRentalReturn,
+	FormRentalRent,
+	FormAddUser,
+} from "../components/Main/Form";
 
 function Home() {
 	return (
@@ -27,4 +33,18 @@ function Home() {
 	);
 }
 
+function getRoutesForHome() {
+	return (
+		<Route path="/" element={<Home />}>
+			<Route index element={<Navigate to="/rental/" />} />
+			<Route path="/rental/" element={<RentalDetail />} />
+			<Route path="/rental/rent" element={<FormRentalRent />} />
+			<Route path="/rental/return" element={<FormRentalReturn />} />
+			<Route path="/users/register" element={<FormAddUser />} />
+		</Route>
+	);
+}
+
 export default Home;
+
+export { getRoutesForHome };
