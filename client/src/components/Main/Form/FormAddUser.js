@@ -2,6 +2,46 @@ import { SectionTitle, Alert } from "../../shared";
 import { Button, Form } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { usePost } from "../../../hooks/HTTPHooks";
+import { getFormGroups, clearAllFormInputs } from "../../shared/formUtils";
+
+const groups = [
+	{
+		label: "Nom du nouveau membre:",
+		formControls: [
+			{
+				name: "nom",
+				placeholder: "Veuillez saisir le nom",
+			},
+		],
+	},
+	{
+		label: "Date de naissance:",
+		formControls: [
+			{
+				name: "naissance",
+				placeholder: "Date de naissance",
+				type: "date",
+			},
+		],
+	},
+	{
+		label: "Carte d'identité du membre ou celui du tuteur:",
+		formControls: [
+			{
+				name: "CIN",
+				placeholder: "Veuillez saisir la CIN",
+			},
+		],
+	},
+	{
+		label: "Adresse:",
+		formControls: [
+			{ name: "logement", placeholder: "Logement (eg: IAD 90A)" },
+			{ name: "commune", placeholder: "Commune" },
+			{ name: "ville", placeholder: "Ville" },
+		],
+	},
+];
 
 export default function FormAddUser() {
 	const [showAlert, setShowAlert] = useState(false);
@@ -9,7 +49,7 @@ export default function FormAddUser() {
 	const [alertTimeout, setAlertTimeout] = useState(null);
 
 	useEffect(() => {
-		if (data) clearForm();
+		if (data) clearAllFormInputs();
 	}, [data]);
 
 	useEffect(() => {
@@ -43,7 +83,7 @@ export default function FormAddUser() {
 				closeAlert={() => setShowAlert(false)}
 			/>
 
-			{getFormGroups()}
+			{getFormGroups(groups)}
 
 			<div className="mt-4 d-flex justify-content-center">
 				<Button type="submit" className="btn-primary-cust" disabled={isPending}>
@@ -65,74 +105,4 @@ function getFormData(form) {
 			ville: form.ville.value,
 		},
 	};
-}
-
-function clearForm() {
-	const form = document.querySelector("form");
-	Array.from(form.querySelectorAll("input")).forEach(
-		(input) => (input.value = "")
-	);
-}
-
-function getFormGroups() {
-	const groups = [
-		{
-			label: "Nom du nouveau membre:",
-			formControls: [
-				{
-					name: "nom",
-					placeholder: "Veuillez saisir le nom",
-				},
-			],
-		},
-		{
-			label: "Date de naissance:",
-			formControls: [
-				{
-					name: "naissance",
-					placeholder: "Date de naissance",
-					type: "date",
-				},
-			],
-		},
-		{
-			label: "Carte d'identité du membre ou celui du tuteur:",
-			formControls: [
-				{
-					name: "CIN",
-					placeholder: "Veuillez saisir la CIN",
-				},
-			],
-		},
-		{
-			label: "Adresse:",
-			formControls: [
-				{ name: "logement", placeholder: "Logement (eg: IAD 90A)" },
-				{ name: "commune", placeholder: "Commune" },
-				{ name: "ville", placeholder: "Ville" },
-			],
-		},
-	];
-
-	return groups.map((group) => {
-		return (
-			<Form.Group className="mb-3" key={group.label}>
-				<Form.Label>{group.label}</Form.Label>
-				{group.formControls.map((fc) => getFormControl(fc))}
-			</Form.Group>
-		);
-	});
-}
-
-function getFormControl({ name, placeholder, type }) {
-	return (
-		<Form.Control
-			className="mb-2"
-			required
-			name={name}
-			placeholder={placeholder}
-			key={name}
-			type={type || "text"}
-		/>
-	);
 }
