@@ -20,6 +20,7 @@ function useMakeHttpRequest(method = "get") {
 
 	const makeRequest = async (path, ...rest) => {
 		setIsPending(() => true);
+		setError(() => null);
 		try {
 			const result = await axios[method](apiRoot + path, ...rest);
 			setIsPending(() => false);
