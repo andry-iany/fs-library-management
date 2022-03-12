@@ -30,6 +30,7 @@ function getAsideAsLibrarian() {
 			<ListItemAction to="/rental/">Details des emprunts</ListItemAction>
 			<ListItemAction to="/users/">Liste des membres</ListItemAction>
 			<ListItemAction to="/users/register">Ajouter un membre</ListItemAction>
+			<ListItemAction to="/books/">Liste des livres</ListItemAction>
 			<ListItemAction to="/rental/rent">Emprunter un livre</ListItemAction>
 			<ListItemAction to="/rental/return">Retourner un livre</ListItemAction>
 		</ListGroup>

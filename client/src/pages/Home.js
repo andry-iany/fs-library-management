@@ -5,6 +5,7 @@ import { Navigate, Outlet, Route } from "react-router-dom";
 import RentalDetail from "../components/Main/RentalDetail";
 import UsersDetail from "../components/Main/UsersDetail";
 import AdminsDetail from "../components/Main/AdminsDetail";
+import BooksDetail from "../components/Main/BooksDetail";
 import {
 	FormRentalReturn,
 	FormRentalRent,
@@ -47,6 +48,7 @@ function getRoutesForHomeAsLibrarian() {
 		<Route path="/" element={<Home />}>
 			<Route index element={<Navigate to="/rental/" />} />
 			<Route path="rental/" element={<RentalDetail />} />
+			<Route path="books/" element={<BooksDetail />} />
 			<Route path="rental/rent" element={<FormRentalRent />} />
 			<Route path="rental/return" element={<FormRentalReturn />} />
 			<Route path="users/" element={<UsersDetail />} />
