@@ -22,11 +22,13 @@ function useMakeHttpRequest(method = "get") {
 		setIsPending(() => true);
 		setError(() => null);
 		try {
-			const result = await axios[method](apiRoot + path, ...rest);
+			const axiosInstance = getAxiosInstanceWithAuth();
+			const result = await axiosInstance[method](apiRoot + path, ...rest);
 			setIsPending(() => false);
 			setError(() => null);
 			setData(() => result);
 		} catch (err) {
+			console.log(err);
 			setIsPending(() => false);
 			setData(() => null);
 			setError(() => err?.response?.data?.error || "Une erreur est survenue.");
@@ -34,6 +36,15 @@ function useMakeHttpRequest(method = "get") {
 	};
 
 	return { data, error, isPending, makeRequest };
+}
+
+function getAxiosInstanceWithAuth() {
+	const authToken = localStorage.getItem("authToken");
+	return axios.create({
+		headers: {
+			Authorization: authToken ? `Bearer ${authToken}` : "",
+		},
+	});
 }
 
 export { useGet, usePost };
