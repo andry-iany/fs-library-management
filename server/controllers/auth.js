@@ -25,7 +25,9 @@ async function loginController(req, res, next) {
 
 const sendToken = (admin, statusCode, res) => {
 	const token = admin.getSignedToken();
-	return res.status(statusCode).json(formatResponseSuccess(token));
+	return res
+		.status(statusCode)
+		.json(formatResponseSuccess({ token, role: admin.role }));
 };
 
 module.exports = { loginController };
