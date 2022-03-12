@@ -60,7 +60,7 @@ function getTableRow({ _id, nom, role }) {
 				<Link to={`/admin/edit/${_id}`}>{_id}</Link>
 			</td>
 			<td>{nom}</td>
-			<td>{role}</td>
+			<td>{role === "manager" ? "Manager" : "Bibliothécaire"}</td>
 		</tr>
 	);
 }

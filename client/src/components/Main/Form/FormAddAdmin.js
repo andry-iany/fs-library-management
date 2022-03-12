@@ -25,7 +25,7 @@ const groups = [
 		],
 	},
 	{
-		label: "Mot de passe par défaut:",
+		label: "Mot de passe:",
 		formControls: [
 			{
 				name: "password",
@@ -96,12 +96,10 @@ export default function FormAddAdmin() {
 }
 
 function getFormData(form) {
-	const data = {
+	return {
 		nom: form.nom.value,
 		role: form.role.value,
 		email: form.email.value,
 		password: form.password.value,
 	};
-	console.log({ data });
-	return data;
 }

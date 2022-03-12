@@ -1,8 +1,8 @@
 import { SectionTitle, Alert } from "../../shared";
 import { Button, Form } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { usePost, useGet } from "../../../hooks/HTTPHooks";
-import { getFormGroups, clearAllFormInputs } from "../../shared/formUtils";
+import { usePut, useGet, useDelete } from "../../../hooks/HTTPHooks";
+import { getFormGroups } from "../../shared/formUtils";
 import { useParams } from "react-router-dom";
 
 const groups = [
@@ -30,23 +30,35 @@ const groups = [
 export default function FormEditAdmin() {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertTimeout, setAlertTimeout] = useState(null);
-	const { makeRequest, data, isPending, error } = usePost();
-	const {
-		makeRequest: makeInitialRequest,
-		data: initialData,
-		isPending: isPendingInitialRequest,
-		error: initialError,
-	} = useGet();
+
+	const putData = usePut();
+	const initialData = useGet();
+	const deleteData = useDelete();
 
 	const { adminId } = useParams();
+
 	useEffect(() => {
-		console.log(adminId);
-		makeInitialRequest(`/admin/${adminId}`);
+		initialData.makeRequest(`/admin/detail/${adminId}`);
+		// eslint-disable-next-line
 	}, []);
 
 	useEffect(() => {
-		if (data) clearAllFormInputs();
-	}, [data]);
+		if (initialData.data) {
+			const form = document.querySelector("form");
+			const content = initialData.data.data.data;
+			form.nom.value = content.nom;
+			form.email.value = content.email;
+			form.role.value = content.role;
+		}
+	}, [initialData.data]);
+
+	useEffect(() => {
+		if (deleteData.data) {
+			alert(`Le responsable ayant ID: ${adminId} est supprimé avec succès.`);
+			window.location.reload();
+		}
+		// eslint-disable-next-line
+	}, [deleteData.data]);
 
 	useEffect(() => {
 		return () => clearTimeout(alertTimeout);
@@ -63,24 +75,38 @@ export default function FormEditAdmin() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const formData = getFormData(e.target);
-		await makeRequest("/admin/register", formData);
+		await putData.makeRequest(`/admin/edit/${adminId}`, formData);
 		setShowAlert(() => true);
 		hideAlertAfterTimeout();
 	};
 
+	const handleSuppress = async (e) => {
+		deleteData.makeRequest(`/admin/delete/${adminId}`);
+	};
+
 	return (
 		<Form onSubmit={handleSubmit}>
-			<SectionTitle text="Modifier un responsable" />
+			<SectionTitle text="Modifier ou Supprimer un responsable" />
 
 			<Alert
-				variant={data ? "success" : "danger"}
-				text={data ? "Responsable créé avec succès." : error}
+				variant={(() => {
+					if (deleteData.error || putData.error || initialData.error)
+						return "danger";
+					return "success";
+				})()}
+				text={(() => {
+					if (initialData.error)
+						return `Requete pour donnée initiale échouéé: ${initialData.error}`;
+					return putData.data
+						? "Responsable modifié avec succès."
+						: putData.error;
+				})()}
 				show={showAlert}
 				closeAlert={() => setShowAlert(false)}
 			/>
 
 			<Form.Group className="mb-2">
-				<Form.Label>ID du membre:</Form.Label>
+				<Form.Label>ID du responsable:</Form.Label>
 				<Form.Control readOnly value={adminId} />
 			</Form.Group>
 
@@ -94,9 +120,21 @@ export default function FormEditAdmin() {
 				</Form.Select>
 			</Form.Group>
 
-			<div className="mt-4 d-flex justify-content-center">
-				<Button type="submit" className="btn-primary-cust" disabled={isPending}>
-					{isPending ? "Patientez..." : "Soumettre"}
+			<div className="mt-4 d-flex justify-content-center gap-3">
+				<Button
+					type="submit"
+					className="btn-primary-cust"
+					disabled={putData.isPending || deleteData.isPending}
+				>
+					{putData.isPending ? "Patientez..." : "Modifier"}
+				</Button>
+				<Button
+					type="button"
+					className="btn-danger"
+					disabled={putData.isPending || deleteData.isPending}
+					onClick={handleSuppress}
+				>
+					Supprimer
 				</Button>
 			</div>
 		</Form>
@@ -104,11 +142,9 @@ export default function FormEditAdmin() {
 }
 
 function getFormData(form) {
-	const data = {
+	return {
 		nom: form.nom.value,
 		role: form.role.value,
 		email: form.email.value,
-		password: form.password.value,
 	};
-	return data;
 }
