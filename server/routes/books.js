@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.use(authenticate(), authorize("librarian"));
 
-router.route("/").get(booksController.getBooks);
+router.route("/").get(booksController.getAllBooks);
 
 router
 	.route("/add")
