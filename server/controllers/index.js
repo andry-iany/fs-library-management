@@ -3,4 +3,5 @@ module.exports = {
 	books: require("./books"),
 	rental: require("./rental"),
 	auth: require("./auth"),
+	admin: require("./admin"),
 };
