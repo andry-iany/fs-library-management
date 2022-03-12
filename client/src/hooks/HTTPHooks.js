@@ -9,6 +9,11 @@ function usePost() {
 	return result;
 }
 
+function usePut() {
+	const result = useMakeHttpRequest("put");
+	return result;
+}
+
 function useGet() {
 	const result = useMakeHttpRequest("get");
 	return result;
@@ -29,7 +34,7 @@ function useMakeHttpRequest(method = "get") {
 			setError(() => null);
 			setData(() => result);
 		} catch (err) {
-			if (err?.response.status === 401) {
+			if (err?.response?.status === 401) {
 				// we want to be redirected to login page when 401
 				authInfo.clearLoginInfo();
 				window.location.reload();
@@ -55,4 +60,4 @@ function getAxiosInstanceWithAuth() {
 	});
 }
 
-export { useGet, usePost };
+export { useGet, usePost, usePut };
