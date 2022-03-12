@@ -28,10 +28,17 @@ function useMakeHttpRequest(method = "get") {
 			setError(() => null);
 			setData(() => result);
 		} catch (err) {
-			console.log(err);
-			setIsPending(() => false);
-			setData(() => null);
-			setError(() => err?.response?.data?.error || "Une erreur est survenue.");
+			if (err?.response.status === 401) {
+				// we want to be redirected to login page when 401
+				localStorage.removeItem("lib_authToken");
+				window.location.reload();
+			} else {
+				setIsPending(() => false);
+				setData(() => null);
+				setError(
+					() => err?.response?.data?.error || "Une erreur est survenue."
+				);
+			}
 		}
 	};
 
