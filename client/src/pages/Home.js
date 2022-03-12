@@ -12,6 +12,7 @@ import {
 	FormAddUser,
 	FormAddAdmin,
 	FormEditAdmin,
+	FormAddBook,
 } from "../components/Main/Form";
 
 export default function Home() {
@@ -49,6 +50,7 @@ function getRoutesForHomeAsLibrarian() {
 			<Route index element={<Navigate to="/rental/" />} />
 			<Route path="rental/" element={<RentalDetail />} />
 			<Route path="books/" element={<BooksDetail />} />
+			<Route path="books/add" element={<FormAddBook />} />
 			<Route path="rental/rent" element={<FormRentalRent />} />
 			<Route path="rental/return" element={<FormRentalReturn />} />
 			<Route path="users/" element={<UsersDetail />} />
