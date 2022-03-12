@@ -4,10 +4,13 @@ import { ShadowedBox } from "../components/shared";
 import { Navigate, Outlet, Route } from "react-router-dom";
 import RentalDetail from "../components/Main/RentalDetail";
 import UsersDetail from "../components/Main/UsersDetail";
+import AdminsDetail from "../components/Main/AdminsDetail";
 import {
 	FormRentalReturn,
 	FormRentalRent,
 	FormAddUser,
+	FormAddAdmin,
+	FormEditAdmin,
 } from "../components/Main/Form";
 
 export default function Home() {
@@ -56,7 +59,9 @@ function getRoutesForHomeAsManager() {
 	return (
 		<Route path="/" element={<Home />}>
 			<Route index element={<Navigate to="/admin/" />} />
-			<Route path="admin/" element={<h1>You are logged as a manager</h1>} />
+			<Route path="admin/" element={<AdminsDetail />} />
+			<Route path="admin/register" element={<FormAddAdmin />} />
+			<Route path="admin/edit/:adminId" element={<FormEditAdmin />} />
 		</Route>
 	);
 }

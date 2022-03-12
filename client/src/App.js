@@ -3,11 +3,11 @@ import { Login } from "./pages";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { getRoutesForHome } from "./pages/Home";
 import AuthContext from "./contexts/AuthContext";
+import { useContext } from "react";
 import {
 	AuthenticatedRoute,
 	NonAuthenticatedRoute,
 } from "./components/Authentication";
-import { useContext } from "react";
 
 function App() {
 	const { loginInfo } = useContext(AuthContext);

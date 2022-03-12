@@ -17,8 +17,9 @@ function getAsideAsManager() {
 	return (
 		<ListGroup>
 			<ListItemAction to="/admin/">Liste des responsables</ListItemAction>
-			<ListItemAction to="/admin/create">Ajouter un responsable</ListItemAction>
-			<ListItemAction to="/admin/edit">Modifier un responsable</ListItemAction>
+			<ListItemAction to="/admin/register">
+				Ajouter un responsable
+			</ListItemAction>
 		</ListGroup>
 	);
 }
