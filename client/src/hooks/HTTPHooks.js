@@ -39,7 +39,7 @@ function useMakeHttpRequest(method = "get") {
 }
 
 function getAxiosInstanceWithAuth() {
-	const authToken = localStorage.getItem("authToken");
+	const authToken = localStorage.getItem("lib_authToken");
 	return axios.create({
 		headers: {
 			Authorization: authToken ? `Bearer ${authToken}` : "",

@@ -16,11 +16,11 @@ const groups = [
 		],
 	},
 	{
-		label: "Password:",
+		label: "Mot de passe:",
 		formControls: [
 			{
 				name: "password",
-				placeholder: "Your password",
+				placeholder: "Votre mot de passe",
 				type: "password",
 			},
 		],
@@ -38,7 +38,7 @@ export default function Login() {
 			setShowAlert(() => true);
 			alertTimeout = setTimeout(() => setShowAlert(() => false), 5000);
 		} else if (data) {
-			localStorage.setItem("authToken", data.data.data);
+			localStorage.setItem("lib_authToken", data.data.data);
 			window.location.reload();
 		}
 

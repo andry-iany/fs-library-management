@@ -19,6 +19,6 @@ export default function Header() {
 }
 
 function handleLogout(e) {
-	localStorage.removeItem("authToken");
+	localStorage.removeItem("lib_authToken");
 	window.location.reload();
 }

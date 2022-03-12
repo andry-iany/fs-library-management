@@ -6,7 +6,7 @@ function AuthContextProvider(props) {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 	useEffect(() => {
-		const token = localStorage.getItem("authToken");
+		const token = localStorage.getItem("lib_authToken");
 		setIsLoggedIn(() => token || false);
 	}, []);
 
