@@ -6,7 +6,6 @@ module.exports = function authorize(...roles) {
 		if (roles.length === 0) next();
 		for (let role of roles) {
 			if (req.admin.role === role) {
-				console.log(role);
 				return next();
 			}
 		}

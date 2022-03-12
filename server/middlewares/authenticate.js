@@ -9,7 +9,6 @@ module.exports = function authenticate() {
 		try {
 			const admin = jwt.verify(token, process.env.JWT_SECRET);
 			req.admin = admin;
-			console.log({ admin });
 			next();
 		} catch (err) {
 			return next(new ErrorResponse("Non autorisé.", 401));

@@ -71,7 +71,6 @@ async function deleteAdmin(req, res, next) {
 
 async function editAdmin(req, res, next) {
 	const { adminId } = req.params;
-	console.log(req.body.nom);
 
 	if (!mongoose.isValidObjectId(adminId))
 		return next(
