@@ -10,7 +10,7 @@ router.route("/").get(booksController.getAllBooks);
 
 router
 	.route("/add")
-	.post(validateRequest("nom", "categorie", "ISBN"))
+	.post(validateRequest("nom", "ISBN"))
 	.post(booksController.addBook);
 
 module.exports = router;
