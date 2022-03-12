@@ -1,17 +1,17 @@
 import { useEffect, useState, createContext } from "react";
+import { authInfo } from "../utils";
 
 const AuthContext = createContext();
 
 function AuthContextProvider(props) {
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [loginInfo, setLoginInfo] = useState(null);
 
 	useEffect(() => {
-		const token = localStorage.getItem("lib_authToken");
-		setIsLoggedIn(() => token || false);
+		setLoginInfo(() => authInfo.getLoginInfo());
 	}, []);
 
 	return (
-		<AuthContext.Provider value={{ isLoggedIn }}>
+		<AuthContext.Provider value={{ loginInfo }}>
 			{props.children}
 		</AuthContext.Provider>
 	);

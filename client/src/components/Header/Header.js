@@ -1,4 +1,5 @@
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { authInfo } from "../../utils";
 
 export default function Header() {
 	return (
@@ -19,6 +20,6 @@ export default function Header() {
 }
 
 function handleLogout(e) {
-	localStorage.removeItem("lib_authToken");
+	authInfo.clearLoginInfo();
 	window.location.reload();
 }

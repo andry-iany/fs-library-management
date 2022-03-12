@@ -3,8 +3,8 @@ import AuthContext from "../../contexts/AuthContext";
 import { Outlet, Navigate } from "react-router-dom";
 
 export default function NonAuthenticatedRoute() {
-	const { isLoggedIn } = useContext(AuthContext);
+	const { loginInfo } = useContext(AuthContext);
 
-	if (isLoggedIn) return <Navigate to="/" />;
+	if (loginInfo) return <Navigate to="/" />;
 	else return <Outlet />;
 }

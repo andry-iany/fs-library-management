@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { authInfo } from "../utils";
 
 const apiRoot = "http://localhost:8080";
 
@@ -30,7 +31,7 @@ function useMakeHttpRequest(method = "get") {
 		} catch (err) {
 			if (err?.response.status === 401) {
 				// we want to be redirected to login page when 401
-				localStorage.removeItem("lib_authToken");
+				authInfo.clearLoginInfo();
 				window.location.reload();
 			} else {
 				setIsPending(() => false);
@@ -46,10 +47,10 @@ function useMakeHttpRequest(method = "get") {
 }
 
 function getAxiosInstanceWithAuth() {
-	const authToken = localStorage.getItem("lib_authToken");
+	const loginInfo = authInfo.getLoginInfo();
 	return axios.create({
 		headers: {
-			Authorization: authToken ? `Bearer ${authToken}` : "",
+			Authorization: loginInfo?.token ? `Bearer ${loginInfo?.token}` : "",
 		},
 	});
 }

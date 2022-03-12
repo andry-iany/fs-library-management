@@ -3,6 +3,7 @@ import { getFormGroups } from "../components/shared/formUtils";
 import { Alert, SectionTitle, ShadowedBoxCentered } from "../components/shared";
 import { Form, Button } from "react-bootstrap";
 import { usePost } from "../hooks/HTTPHooks";
+import { authInfo } from "../utils/";
 
 const groups = [
 	{
@@ -38,7 +39,7 @@ export default function Login() {
 			setShowAlert(() => true);
 			alertTimeout = setTimeout(() => setShowAlert(() => false), 5000);
 		} else if (data) {
-			localStorage.setItem("lib_authToken", data.data.data);
+			authInfo.storeLoginInfo(data.data.data);
 			window.location.reload();
 		}
 
