@@ -19,11 +19,11 @@ export default function PaginationControl({ onClickNextOrPrev, maxPage }) {
 
 	return (
 		<div className="d-flex justify-content-center align-items-center gap-3 my-3">
-			<Icon src={Prev} disabled={currentPage === 1} onClick={handleClickPrev} />
+			<Icon src={Prev} disabled={currentPage <= 1} onClick={handleClickPrev} />
 			<span className="border-bottom-cust">{currentPage}</span>
 			<Icon
 				src={Next}
-				disabled={currentPage === maxPage}
+				disabled={currentPage >= maxPage}
 				onClick={handleClickNext}
 			/>
 		</div>

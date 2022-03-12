@@ -7,6 +7,7 @@ function getPageAndLimitIfValid(query) {
 }
 
 function getMaxPage(docsCount, limit) {
+	if (docsCount === 0 && limit === 0) return 1;
 	return Math.ceil(docsCount / limit);
 }
 
