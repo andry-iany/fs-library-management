@@ -1,27 +1,29 @@
 import "./App.css";
 import { Login } from "./pages";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { getRoutesForHome } from "./pages/Home";
-import { Route, Routes } from "react-router-dom";
-import { AuthContextProvider } from "./contexts/AuthContext";
+import AuthContext from "./contexts/AuthContext";
 import {
 	AuthenticatedRoute,
 	NonAuthenticatedRoute,
 } from "./components/Authentication";
+import { useContext } from "react";
 
 function App() {
+	const { loginInfo } = useContext(AuthContext);
+
 	return (
-		<AuthContextProvider>
-			<AppWrapper>
-				<Routes>
-					<Route path="/" element={<AuthenticatedRoute />}>
-						{getRoutesForHome()}
-					</Route>
-					<Route path="/auth" element={<NonAuthenticatedRoute />}>
-						<Route path="login" element={<Login />} />
-					</Route>
-				</Routes>
-			</AppWrapper>
-		</AuthContextProvider>
+		<AppWrapper>
+			<Routes>
+				<Route path="/" element={<AuthenticatedRoute />}>
+					{getRoutesForHome(loginInfo?.role)}
+				</Route>
+				<Route path="/auth" element={<NonAuthenticatedRoute />}>
+					<Route path="login" element={<Login />} />
+				</Route>
+				<Route path="*" element={<Navigate to="/" />} />
+			</Routes>
+		</AppWrapper>
 	);
 }
 

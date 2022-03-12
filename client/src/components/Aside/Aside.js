@@ -1,7 +1,29 @@
 import { ListGroup } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import AuthContext from "../../contexts/AuthContext";
+import { useContext } from "react";
 
 export default function Aside() {
+	const { loginInfo } = useContext(AuthContext);
+	return getAsideByRole(loginInfo?.role);
+}
+
+function getAsideByRole(role) {
+	if (role === "manager") return getAsideAsManager();
+	if (role === "librarian") return getAsideAsLibrarian();
+}
+
+function getAsideAsManager() {
+	return (
+		<ListGroup>
+			<ListItemAction to="/admin/">Liste des responsables</ListItemAction>
+			<ListItemAction to="/admin/create">Ajouter un responsable</ListItemAction>
+			<ListItemAction to="/admin/edit">Modifier un responsable</ListItemAction>
+		</ListGroup>
+	);
+}
+
+function getAsideAsLibrarian() {
 	return (
 		<ListGroup>
 			<ListItemAction to="/rental/">Details des emprunts</ListItemAction>

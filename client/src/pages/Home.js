@@ -10,7 +10,7 @@ import {
 	FormAddUser,
 } from "../components/Main/Form";
 
-function Home() {
+export default function Home() {
 	return (
 		<Container className="d-flex flex-column h-100">
 			<ShadowedBox className="mb-5">
@@ -34,7 +34,12 @@ function Home() {
 	);
 }
 
-function getRoutesForHome() {
+export function getRoutesForHome(role) {
+	if (role === "librarian") return getRoutesForHomeAsLibrarian();
+	if (role === "manager") return getRoutesForHomeAsManager();
+}
+
+function getRoutesForHomeAsLibrarian() {
 	return (
 		<Route path="/" element={<Home />}>
 			<Route index element={<Navigate to="/rental/" />} />
@@ -47,6 +52,11 @@ function getRoutesForHome() {
 	);
 }
 
-export default Home;
-
-export { getRoutesForHome };
+function getRoutesForHomeAsManager() {
+	return (
+		<Route path="/" element={<Home />}>
+			<Route index element={<Navigate to="/admin/" />} />
+			<Route path="admin/" element={<h1>You are logged as a manager</h1>} />
+		</Route>
+	);
+}
