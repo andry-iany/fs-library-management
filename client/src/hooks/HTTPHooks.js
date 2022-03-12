@@ -19,6 +19,11 @@ function useGet() {
 	return result;
 }
 
+function useDelete() {
+	const result = useMakeHttpRequest("delete");
+	return result;
+}
+
 function useMakeHttpRequest(method = "get") {
 	const [data, setData] = useState(null);
 	const [error, setError] = useState(null);
@@ -60,4 +65,4 @@ function getAxiosInstanceWithAuth() {
 	});
 }
 
-export { useGet, usePost, usePut };
+export { useGet, usePost, usePut, useDelete };
