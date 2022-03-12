@@ -1,7 +1,9 @@
 const { rental: rentalController } = require("../controllers");
-const { validateRequest } = require("../middlewares");
+const { validateRequest, authenticate, authorize } = require("../middlewares");
 const express = require("express");
 const router = express.Router();
+
+router.use(authenticate(), authorize("librarian"));
 
 router.route("/").get(rentalController.getAllRentals);
 
