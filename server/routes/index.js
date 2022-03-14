@@ -1,3 +1,7 @@
 module.exports = {
-	notFound: require("./404"),
+	admin: require("./admin"),
+	auth: require("./auth"),
+	books: require("./books"),
+	rental: require("./rental"),
+	users: require("./users"),
 };

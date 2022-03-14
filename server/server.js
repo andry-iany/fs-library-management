@@ -21,7 +21,7 @@ async function startServer() {
 	app.use("/admin", require("./routes/admin"));
 
 	// 404
-	app.use(require("./routes/404"));
+	app.use(require("./middlewares/404"));
 
 	// error handler
 	app.use(require("./middlewares/error"));

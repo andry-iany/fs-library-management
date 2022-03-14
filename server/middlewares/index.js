@@ -3,4 +3,5 @@ module.exports = {
 	validateRequest: require("./validateRequest"),
 	authenticate: require("./authenticate"),
 	authorize: require("./authorize"),
+	notFound: require("./404"),
 };
