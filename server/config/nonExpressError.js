@@ -1,10 +1,14 @@
+const { logger } = require("../utils");
+
 function handleError() {
 	process.on("uncaughtException", (err) => {
-		console.log("UNCAUGHT ERROR:", err);
+		logger.log("error", err);
+		process.exit(1);
 	});
 
 	process.on("unhandledRejection", (err) => {
-		console.log("UNHANDLED REJECTION:", err);
+		logger.log("error", err);
+		process.exit(1);
 	});
 }
 
