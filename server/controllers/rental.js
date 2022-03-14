@@ -45,9 +45,7 @@ async function getRentalByUserId(req, res, next) {
 async function rentBook(req, res, next) {
 	try {
 		if (!mongoose.isValidObjectId(req.validBody.userId))
-			return next(
-				new ErrorResponse("L'utilisateur spécifié n'existe pas.", 400)
-			);
+			throw new Error("L'utilisateur spécifié n'existe pas.", 400);
 
 		await verifyIfBooksAreAvailable(req.validBody.ISBN);
 
@@ -67,11 +65,11 @@ async function rentBook(req, res, next) {
 			});
 		}
 
-		await Rental.validate(newRental);
+		await validateRental(newRental);
+
 		const savedRental = await newRental.save();
 		return res.status(200).json(formatResponseSuccess(savedRental));
 	} catch (err) {
-		console.log(err.message);
 		return next(new ErrorResponse(err.message, 400));
 	}
 }
@@ -80,6 +78,17 @@ async function verifyIfBooksAreAvailable(ISBNs) {
 	const existBooks = await Book.contains(...ISBNs);
 	if (!existBooks)
 		throw new Error("Le(s) livre(s) specifié(s) n'existe(nt) pas.");
+}
+
+async function validateRental(rental) {
+	try {
+		await Rental.validate(rental);
+	} catch (err) {
+		const errMessage = Object.keys(err.errors).reduce((acc, curr) => {
+			return (acc += `${err.errors[curr].properties.message}. `);
+		}, "");
+		throw new Error(errMessage);
+	}
 }
 
 async function returnBook(req, res, next) {

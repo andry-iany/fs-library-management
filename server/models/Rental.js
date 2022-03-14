@@ -5,7 +5,7 @@ const RentalSchema = new mongoose.Schema({
 	userId: {
 		type: mongoose.SchemaTypes.ObjectId,
 		ref: "User",
-		required: true,
+		required: "L'ID du membre est nécessaire",
 	},
 	ISBN: {
 		type: [String],
@@ -18,7 +18,7 @@ const RentalSchema = new mongoose.Schema({
 					value.length <= MAX_ALLOWED_TO_RENT
 				);
 			},
-			message: `On peut emprunter seulement 1 à ${MAX_ALLOWED_TO_RENT} livres.`,
+			message: `On peut emprunter seulement 1 à ${MAX_ALLOWED_TO_RENT} livres`,
 		},
 	},
 	rentedOn: {
