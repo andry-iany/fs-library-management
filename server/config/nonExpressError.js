@@ -1,4 +1,4 @@
-function handleNonExpressError() {
+function handleError() {
 	process.on("uncaughtException", (err) => {
 		console.log("UNCAUGHT ERROR:", err);
 	});
@@ -8,4 +8,4 @@ function handleNonExpressError() {
 	});
 }
 
-module.exports = { handleNonExpressError };
+module.exports = { handleError };

@@ -1,12 +1,12 @@
 const cors = require("cors");
 const express = require("express");
-const connectDB = require("./config/db");
+const { db, routes } = require("./config");
 
 const app = express();
 const port = process.env.PORT || 8080;
 
 async function startServer() {
-	await connectDB();
+	await db.connect();
 
 	// middlewares
 	app.use(cors());
@@ -14,11 +14,7 @@ async function startServer() {
 	app.use(express.urlencoded({ extended: false }));
 
 	// routes
-	app.use("/users", require("./routes/users"));
-	app.use("/books", require("./routes/books"));
-	app.use("/rental", require("./routes/rental"));
-	app.use("/auth", require("./routes/auth"));
-	app.use("/admin", require("./routes/admin"));
+	routes.applyRoutes(app);
 
 	// 404
 	app.use(require("./middlewares/404"));
