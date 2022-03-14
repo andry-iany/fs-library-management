@@ -1,26 +1,15 @@
-const cors = require("cors");
 const express = require("express");
-const { db, routes } = require("./config");
-
-const app = express();
-const port = process.env.PORT || 8080;
+const { db, routes, middlewares } = require("./config");
 
 async function startServer() {
+	const app = express();
+	const port = process.env.PORT || 8080;
+
 	await db.connect();
 
-	// middlewares
-	app.use(cors());
-	app.use(express.json());
-	app.use(express.urlencoded({ extended: false }));
-
-	// routes
+	middlewares.applyPreRoutesMiddlewares(app);
 	routes.applyRoutes(app);
-
-	// 404
-	app.use(require("./middlewares/404"));
-
-	// error handler
-	app.use(require("./middlewares/error"));
+	middlewares.applyPostRoutesMiddlewares(app);
 
 	app.listen(port, () => console.log(`Server is running on port: ${port}`));
 }
