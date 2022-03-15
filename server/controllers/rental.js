@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Book, Rental } = require("../models");
+const { Book, Rental, User } = require("../models");
 const { handleGetWithOptionalPagination } = require("./_shared");
 const { formatResponse, ErrorResponse } = require("../utils");
 
@@ -58,15 +58,13 @@ function _removeBooksFromRental(rental, booksToRemove = []) {
 
 exports.rentBook = async function (req, res, next) {
 	try {
-		if (!mongoose.isValidObjectId(req.validBody.userId))
-			throw new Error("L'utilisateur spécifié n'existe pas.", 400);
-
+		await _verifyIfRentingUserExists(req.validBody.userId);
 		await _verifyIfBooksAreAvailable(req.validBody.ISBN);
 
+		let newRental = null;
 		const existingRental = await Rental.findOne({
 			userId: req.validBody.userId,
 		});
-		let newRental = null;
 
 		if (existingRental) {
 			newRental = existingRental;
@@ -87,6 +85,14 @@ exports.rentBook = async function (req, res, next) {
 		return next(new ErrorResponse(err.message, 400));
 	}
 };
+
+async function _verifyIfRentingUserExists(userId) {
+	if (!mongoose.isValidObjectId(userId))
+		throw new Error("L'utilisateur spécifié n'existe pas.");
+
+	const userRenting = await User.findById(userId);
+	if (!userRenting) throw new Error("L'utilisateur spécifié n'existe pas.");
+}
 
 async function _verifyIfBooksAreAvailable(ISBNs) {
 	const existBooks = await Book.contains(...ISBNs);
