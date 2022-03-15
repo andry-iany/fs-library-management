@@ -1,33 +1,23 @@
-const { Book, Rental } = require("../models");
-const { formatResponse, ErrorResponse, paginationUtils } = require("../utils");
 const mongoose = require("mongoose");
-
-const { getPageAndLimitIfValid, getMaxPage } = paginationUtils;
-const { forSuccess, forSuccessWithPagination } = formatResponse;
+const { Book, Rental } = require("../models");
+const {
+	formatResponse,
+	ErrorResponse,
+	paginationUtils,
+	dbUtils,
+} = require("../utils");
 
 exports.getAllRentals = async function (req, res, next) {
-	let rentals = null;
+	let resBody;
 
-	const pageAndLimit = getPageAndLimitIfValid(req.query);
-	if (pageAndLimit) {
-		rentals = await Rental.find({})
-			.skip((pageAndLimit._page - 1) * pageAndLimit._limit)
-			.limit(pageAndLimit._limit);
+	const pageAndLimit = paginationUtils.getPageAndLimitIfValid(req.query);
+	const result = await dbUtils.queryDB(Rental, {}, pageAndLimit);
 
-		const docsCount = await Rental.countDocuments();
-		res
-			.status(200)
-			.json(
-				forSuccessWithPagination(
-					rentals,
-					pageAndLimit._page,
-					getMaxPage(docsCount, pageAndLimit._limit)
-				)
-			);
-	} else {
-		rentals = await Rental.find({});
-		res.status(200).json(forSuccess(rentals));
-	}
+	resBody = pageAndLimit
+		? formatResponse.forSuccessWithPagination_2(result)
+		: formatResponse.forSuccess(result);
+
+	res.status(200).json(resBody);
 };
 
 exports.getRentalByUserId = async function (req, res, next) {
@@ -38,7 +28,7 @@ exports.getRentalByUserId = async function (req, res, next) {
 		rental = await Rental.findOne({ userId });
 	}
 
-	return res.status(200).json(forSuccess(rental));
+	return res.status(200).json(formatResponse.forSuccess(rental));
 };
 
 exports.returnBook = async function (req, res, next) {
@@ -69,7 +59,7 @@ exports.returnBook = async function (req, res, next) {
 		await rental.save();
 	}
 
-	res.status(200).json(forSuccess(rental));
+	res.status(200).json(formatResponse.forSuccess(rental));
 };
 
 exports.rentBook = async function (req, res, next) {
@@ -98,7 +88,7 @@ exports.rentBook = async function (req, res, next) {
 		await _validateRental(newRental);
 
 		const savedRental = await newRental.save();
-		return res.status(200).json(forSuccess(savedRental));
+		return res.status(200).json(formatResponse.forSuccess(savedRental));
 	} catch (err) {
 		return next(new ErrorResponse(err.message, 400));
 	}
