@@ -1,4 +1,4 @@
-const { ErrorResponse } = require("../utils");
+const { ErrorResponse, formatResponse } = require("../utils");
 
 function handleError(err, req, res, next) {
 	let error;
@@ -12,7 +12,7 @@ function handleError(err, req, res, next) {
 		error = new ErrorResponse("Une erreur s'est produite.", 500);
 	}
 
-	res.status(error.statusCode).json({ error: error.message });
+	res.status(error.statusCode).json(formatResponse.forError(error.message));
 }
 
 module.exports = handleError;
