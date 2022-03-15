@@ -65,7 +65,6 @@ exports.editAdmin = async function (req, res, next) {
 		const editedAdmin = await admin.save();
 		return res.status(200).json(formatResponse.forSuccess(editedAdmin));
 	} catch (err) {
-		console.log(err);
 		return next(err);
 	}
 };
