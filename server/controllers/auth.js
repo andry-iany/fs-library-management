@@ -3,7 +3,7 @@ const { ErrorResponse, formatResponse } = require("../utils");
 
 const formatResponseSuccess = formatResponse.formatResponseSuccess;
 
-async function loginController(req, res, next) {
+exports.loginController = async function (req, res, next) {
 	try {
 		const admin = await Admin.findOne({ email: req.validBody.email }).select(
 			"+password"
@@ -21,7 +21,7 @@ async function loginController(req, res, next) {
 	} catch (err) {
 		return next(err);
 	}
-}
+};
 
 const sendToken = (admin, statusCode, res) => {
 	const token = admin.getSignedToken();
@@ -29,5 +29,3 @@ const sendToken = (admin, statusCode, res) => {
 		.status(statusCode)
 		.json(formatResponseSuccess({ token, role: admin.role }));
 };
-
-module.exports = { loginController };

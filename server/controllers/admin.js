@@ -6,16 +6,16 @@ const { getPageAndLimitIfValid, getMaxPage } = paginationUtils;
 const { formatResponseSuccess, formatResponseSuccessWithPagination } =
 	formatResponse;
 
-async function getAllAdmins(req, res) {
+exports.getAllAdmins = async function (req, res) {
 	const pageAndLimit = getPageAndLimitIfValid(req.query);
 	if (pageAndLimit) {
-		await getAllAdminsPaginated(res, pageAndLimit);
+		await _getAllAdminsPaginated(res, pageAndLimit);
 	} else {
-		await getAllAdminsNonPaginated(res);
+		await _getAllAdminsNonPaginated(res);
 	}
-}
+};
 
-async function getAllAdminsPaginated(res, { _page, _limit }) {
+async function _getAllAdminsPaginated(res, { _page, _limit }) {
 	const admins = await Admin.find({})
 		.skip((_page - 1) * _limit)
 		.limit(_limit);
@@ -32,12 +32,12 @@ async function getAllAdminsPaginated(res, { _page, _limit }) {
 		);
 }
 
-async function getAllAdminsNonPaginated(res) {
+async function _getAllAdminsNonPaginated(res) {
 	const admins = await Admin.find({});
 	res.status(200).json(formatResponseSuccess(admins));
 }
 
-async function getAdmin(req, res, next) {
+exports.getAdmin = async function (req, res, next) {
 	const { adminId } = req.params;
 	if (!mongoose.isValidObjectId(adminId))
 		return next(
@@ -51,9 +51,9 @@ async function getAdmin(req, res, next) {
 		);
 
 	return res.status(200).json(formatResponseSuccess(admin));
-}
+};
 
-async function deleteAdmin(req, res, next) {
+exports.deleteAdmin = async function (req, res, next) {
 	const { adminId } = req.params;
 	if (!mongoose.isValidObjectId(adminId))
 		return next(
@@ -67,9 +67,9 @@ async function deleteAdmin(req, res, next) {
 		);
 
 	return res.status(200).json(formatResponseSuccess(admin));
-}
+};
 
-async function editAdmin(req, res, next) {
+exports.editAdmin = async function (req, res, next) {
 	const { adminId } = req.params;
 
 	if (!mongoose.isValidObjectId(adminId))
@@ -94,9 +94,9 @@ async function editAdmin(req, res, next) {
 		console.log(err);
 		return next(err);
 	}
-}
+};
 
-async function register(req, res, next) {
+exports.register = async function (req, res, next) {
 	const adminExist = await Admin.findOne({ email: req.validBody.email });
 	if (adminExist)
 		return next(new ErrorResponse("Le responsable existe dejà.", 400));
@@ -111,6 +111,4 @@ async function register(req, res, next) {
 	} catch (err) {
 		return next(err);
 	}
-}
-
-module.exports = { getAllAdmins, register, getAdmin, deleteAdmin, editAdmin };
+};

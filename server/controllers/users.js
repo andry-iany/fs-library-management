@@ -5,15 +5,16 @@ const { getPageAndLimitIfValid, getMaxPage } = paginationUtils;
 const { formatResponseSuccess, formatResponseSuccessWithPagination } =
 	formatResponse;
 
-async function getAllUsers(req, res) {
+exports.getAllUsers = async function (req, res) {
 	const pageAndLimit = getPageAndLimitIfValid(req.query);
 	if (pageAndLimit) {
-		await getAllUsersPaginated(res, pageAndLimit);
+		await _getAllUsersPaginated(res, pageAndLimit);
 	} else {
-		await getAllUsersNonPaginated(res);
+		await _getAllUsersNonPaginated(res);
 	}
-}
-async function getAllUsersPaginated(res, { _page, _limit }) {
+};
+
+async function _getAllUsersPaginated(res, { _page, _limit }) {
 	const users = await User.find({})
 		.skip((_page - 1) * _limit)
 		.limit(_limit);
@@ -29,12 +30,12 @@ async function getAllUsersPaginated(res, { _page, _limit }) {
 			)
 		);
 }
-async function getAllUsersNonPaginated(res) {
+async function _getAllUsersNonPaginated(res) {
 	const users = await User.find({});
 	res.status(200).json(formatResponseSuccess(users));
 }
 
-async function register(req, res, next) {
+exports.register = async function (req, res, next) {
 	const CIN = Number(req.validBody.CIN);
 
 	if (isNaN(CIN)) return next(new ErrorResponse("Donnée invalide.", 400));
@@ -55,6 +56,4 @@ async function register(req, res, next) {
 	} catch (err) {
 		return next(err);
 	}
-}
-
-module.exports = { getAllUsers, register };
+};

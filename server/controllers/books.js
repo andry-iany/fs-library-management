@@ -5,16 +5,16 @@ const { getPageAndLimitIfValid, getMaxPage } = paginationUtils;
 const { formatResponseSuccess, formatResponseSuccessWithPagination } =
 	formatResponse;
 
-async function getAllBooks(req, res) {
+exports.getAllBooks = async function (req, res) {
 	const pageAndLimit = getPageAndLimitIfValid(req.query);
 	if (pageAndLimit) {
-		await getAllBooksPaginated(res, pageAndLimit);
+		await _getAllBooksPaginated(res, pageAndLimit);
 	} else {
-		await getAllBooksNonPaginated(res);
+		await _getAllBooksNonPaginated(res);
 	}
-}
+};
 
-async function getAllBooksPaginated(res, { _page, _limit }) {
+async function _getAllBooksPaginated(res, { _page, _limit }) {
 	const admins = await Book.find({})
 		.skip((_page - 1) * _limit)
 		.limit(_limit);
@@ -31,12 +31,12 @@ async function getAllBooksPaginated(res, { _page, _limit }) {
 		);
 }
 
-async function getAllBooksNonPaginated(res) {
+async function _getAllBooksNonPaginated(res) {
 	const admins = await Book.find({});
 	res.status(200).json(formatResponseSuccess(admins));
 }
 
-async function addBook(req, res, next) {
+exports.addBook = async function (req, res, next) {
 	const existingBook = await Book.findOne({ ISBN: req.validBody.ISBN });
 	if (existingBook) {
 		const message = `Un livre ayant ISBN:${req.validBody.ISBN} existe dejà.`;
@@ -46,6 +46,4 @@ async function addBook(req, res, next) {
 	const book = new Book(req.validBody);
 	const savedBook = await book.save();
 	res.status(201).json(formatResponseSuccess(savedBook));
-}
-
-module.exports = { addBook, getAllBooks };
+};

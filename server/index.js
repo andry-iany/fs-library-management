@@ -1,8 +1,7 @@
 require("dotenv").config({ path: "./.env" });
 
 const { nonExpressError } = require("./config");
-const startServer = require("./server");
-
 nonExpressError.handleError();
 
+const startServer = require("./server");
 startServer();

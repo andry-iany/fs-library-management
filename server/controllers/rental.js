@@ -6,7 +6,7 @@ const { getPageAndLimitIfValid, getMaxPage } = paginationUtils;
 const { formatResponseSuccess, formatResponseSuccessWithPagination } =
 	formatResponse;
 
-async function getAllRentals(req, res, next) {
+exports.getAllRentals = async function (req, res, next) {
 	let rentals = null;
 
 	const pageAndLimit = getPageAndLimitIfValid(req.query);
@@ -29,9 +29,9 @@ async function getAllRentals(req, res, next) {
 		rentals = await Rental.find({});
 		res.status(200).json(formatResponseSuccess(rentals));
 	}
-}
+};
 
-async function getRentalByUserId(req, res, next) {
+exports.getRentalByUserId = async function (req, res, next) {
 	const userId = req.params.userId;
 	let rental = null;
 
@@ -40,58 +40,9 @@ async function getRentalByUserId(req, res, next) {
 	}
 
 	return res.status(200).json(formatResponseSuccess(rental));
-}
+};
 
-async function rentBook(req, res, next) {
-	try {
-		if (!mongoose.isValidObjectId(req.validBody.userId))
-			throw new Error("L'utilisateur spécifié n'existe pas.", 400);
-
-		await verifyIfBooksAreAvailable(req.validBody.ISBN);
-
-		const existingRental = await Rental.findOne({
-			userId: req.validBody.userId,
-		});
-		let newRental = null;
-
-		if (existingRental) {
-			newRental = existingRental;
-			newRental.ISBN.push(...req.validBody.ISBN);
-		} else {
-			newRental = new Rental({
-				userId: req.validBody.userId,
-				ISBN: req.validBody.ISBN,
-				rentedOn: new Date(),
-			});
-		}
-
-		await validateRental(newRental);
-
-		const savedRental = await newRental.save();
-		return res.status(200).json(formatResponseSuccess(savedRental));
-	} catch (err) {
-		return next(new ErrorResponse(err.message, 400));
-	}
-}
-
-async function verifyIfBooksAreAvailable(ISBNs) {
-	const existBooks = await Book.contains(...ISBNs);
-	if (!existBooks)
-		throw new Error("Le(s) livre(s) specifié(s) n'existe(nt) pas.");
-}
-
-async function validateRental(rental) {
-	try {
-		await Rental.validate(rental);
-	} catch (err) {
-		const errMessage = Object.keys(err.errors).reduce((acc, curr) => {
-			return (acc += `${err.errors[curr].properties.message}. `);
-		}, "");
-		throw new Error(errMessage);
-	}
-}
-
-async function returnBook(req, res, next) {
+exports.returnBook = async function (req, res, next) {
 	if (!mongoose.isValidObjectId(req.validBody.userId))
 		return next(new ErrorResponse("L'utilisateur spécifié n'existe pas.", 400));
 
@@ -120,6 +71,53 @@ async function returnBook(req, res, next) {
 	}
 
 	res.status(200).json(formatResponseSuccess(rental));
+};
+
+exports.rentBook = async function (req, res, next) {
+	try {
+		if (!mongoose.isValidObjectId(req.validBody.userId))
+			throw new Error("L'utilisateur spécifié n'existe pas.", 400);
+
+		await _verifyIfBooksAreAvailable(req.validBody.ISBN);
+
+		const existingRental = await Rental.findOne({
+			userId: req.validBody.userId,
+		});
+		let newRental = null;
+
+		if (existingRental) {
+			newRental = existingRental;
+			newRental.ISBN.push(...req.validBody.ISBN);
+		} else {
+			newRental = new Rental({
+				userId: req.validBody.userId,
+				ISBN: req.validBody.ISBN,
+				rentedOn: new Date(),
+			});
+		}
+
+		await _validateRental(newRental);
+
+		const savedRental = await newRental.save();
+		return res.status(200).json(formatResponseSuccess(savedRental));
+	} catch (err) {
+		return next(new ErrorResponse(err.message, 400));
+	}
+};
+
+async function _verifyIfBooksAreAvailable(ISBNs) {
+	const existBooks = await Book.contains(...ISBNs);
+	if (!existBooks)
+		throw new Error("Le(s) livre(s) specifié(s) n'existe(nt) pas.");
 }
 
-module.exports = { getRentalByUserId, getAllRentals, rentBook, returnBook };
+async function _validateRental(rental) {
+	try {
+		await Rental.validate(rental);
+	} catch (err) {
+		const errMessage = Object.keys(err.errors).reduce((acc, curr) => {
+			return (acc += `${err.errors[curr].properties.message}. `);
+		}, "");
+		throw new Error(errMessage);
+	}
+}

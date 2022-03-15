@@ -29,8 +29,4 @@ function addPropToObjectIfValueDefinedOrNonEmptyArray(object, property, value) {
 	object[property] = value;
 }
 
-function isUndefined(value) {
-	return value === undefined;
-}
-
 module.exports = validateRequest;

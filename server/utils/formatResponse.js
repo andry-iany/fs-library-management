@@ -1,16 +1,14 @@
-function formatResponseSuccess(data) {
+exports.formatResponseSuccess = function (data) {
 	return { data };
-}
-function formatResponseSuccessWithPagination(data, currentPage, maxPage) {
+};
+exports.formatResponseSuccessWithPagination = function (
+	data,
+	currentPage,
+	maxPage
+) {
 	return { data, currentPage, maxPage };
-}
+};
 
-function formatResponseError(error) {
+exports.formatResponseError = function (error) {
 	return { error };
-}
-
-module.exports = {
-	formatResponseError,
-	formatResponseSuccess,
-	formatResponseSuccessWithPagination,
 };
