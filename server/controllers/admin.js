@@ -1,23 +1,14 @@
 const { Admin } = require("../models");
 const mongoose = require("mongoose");
-const {
-	formatResponse,
-	paginationUtils,
-	dbUtils,
-	ErrorResponse,
-} = require("../utils");
+const { handleGetWithOptionalPagination } = require("./_shared");
+const { formatResponse, ErrorResponse } = require("../utils");
 
 exports.getAllAdmins = async function (req, res) {
-	let resBody;
-
-	const pageAndLimit = paginationUtils.getPageAndLimitIfValid(req.query);
-	const result = await dbUtils.queryDB(Admin, {}, pageAndLimit);
-
-	resBody = pageAndLimit
-		? formatResponse.forSuccessWithPagination(result)
-		: formatResponse.forSuccess(result);
-
-	res.status(200).json(resBody);
+	req.queryDBArgs = {
+		Model: Admin,
+		filter: {},
+	};
+	return handleGetWithOptionalPagination(req, res);
 };
 
 exports.getAdmin = async function (req, res, next) {
