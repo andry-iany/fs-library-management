@@ -15,9 +15,8 @@ exports.getRentalByUserId = async function (req, res, next) {
 	const userId = req.params.userId;
 	let rental = null;
 
-	if (mongoose.isValidObjectId(userId)) {
+	if (mongoose.isValidObjectId(userId))
 		rental = await Rental.findOne({ userId });
-	}
 
 	return res.status(200).json(formatResponse.forSuccess(rental));
 };
@@ -58,8 +57,8 @@ function _removeBooksFromRental(rental, booksToRemove = []) {
 
 exports.rentBook = async function (req, res, next) {
 	try {
-		await _verifyIfRentingUserExists(req.validBody.userId);
-		await _verifyIfBooksAreAvailable(req.validBody.ISBN);
+		if (!mongoose.isValidObjectId(req.validBody.userId))
+			throw new Error("L'utilisateur spécifié n'existe pas");
 
 		let newRental = null;
 		const existingRental = await Rental.findOne({
@@ -85,17 +84,3 @@ exports.rentBook = async function (req, res, next) {
 		else return next(new ErrorResponse(err.message, 400));
 	}
 };
-
-async function _verifyIfRentingUserExists(userId) {
-	if (!mongoose.isValidObjectId(userId))
-		throw new Error("L'utilisateur spécifié n'existe pas.");
-
-	const userRenting = await User.findById(userId);
-	if (!userRenting) throw new Error("L'utilisateur spécifié n'existe pas.");
-}
-
-async function _verifyIfBooksAreAvailable(ISBNs) {
-	const existBooks = await Book.contains(...ISBNs);
-	if (!existBooks)
-		throw new Error("Le(s) livre(s) specifié(s) n'existe(nt) pas.");
-}
