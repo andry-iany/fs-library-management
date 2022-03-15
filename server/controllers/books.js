@@ -1,22 +1,13 @@
 const { Book } = require("../models");
-const {
-	dbUtils,
-	formatResponse,
-	paginationUtils,
-	ErrorResponse,
-} = require("../utils");
+const { handleGetWithOptionalPagination } = require("./_shared");
+const { formatResponse, ErrorResponse } = require("../utils");
 
-exports.getAllBooks = async function (req, res) {
-	let resBody;
-
-	const pageAndLimit = paginationUtils.getPageAndLimitIfValid(req.query);
-	const result = await dbUtils.queryDB(Book, {}, pageAndLimit);
-
-	resBody = pageAndLimit
-		? formatResponse.forSuccessWithPagination(result)
-		: formatResponse.forSuccess(result);
-
-	res.status(200).json(resBody);
+exports.getAllBooks = function (req, res) {
+	req.queryDBArgs = {
+		Model: Book,
+		filter: {},
+	};
+	return handleGetWithOptionalPagination(req, res);
 };
 
 exports.addBook = async function (req, res, next) {

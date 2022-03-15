@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const { handleGetWithOptionalPagination } = require("./_shared");
 const { formatResponse, ErrorResponse } = require("../utils");
 
-exports.getAllAdmins = async function (req, res) {
+exports.getAllAdmins = function (req, res) {
 	req.queryDBArgs = {
 		Model: Admin,
 		filter: {},
