@@ -77,12 +77,12 @@ exports.rentBook = async function (req, res, next) {
 			});
 		}
 
-		await _validateRental(newRental);
-
 		const savedRental = await newRental.save();
 		return res.status(200).json(formatResponse.forSuccess(savedRental));
 	} catch (err) {
-		return next(new ErrorResponse(err.message, 400));
+		// mongoose validation error
+		if (err.errors) return next(err);
+		else return next(new ErrorResponse(err.message, 400));
 	}
 };
 
@@ -98,15 +98,4 @@ async function _verifyIfBooksAreAvailable(ISBNs) {
 	const existBooks = await Book.contains(...ISBNs);
 	if (!existBooks)
 		throw new Error("Le(s) livre(s) specifié(s) n'existe(nt) pas.");
-}
-
-async function _validateRental(rental) {
-	try {
-		await Rental.validate(rental);
-	} catch (err) {
-		const errMessage = Object.keys(err.errors).reduce((acc, curr) => {
-			return (acc += `${err.errors[curr].properties.message}. `);
-		}, "");
-		throw new Error(errMessage);
-	}
 }
