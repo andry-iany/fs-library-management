@@ -3,4 +3,5 @@ module.exports = {
 	formatResponse: require("./formatResponse"),
 	paginationUtils: require("./paginationUtils"),
 	logger: require("./logger"),
+	dbUtils: require("./dbUtils"),
 };
