@@ -1,18 +1,23 @@
 const { ErrorResponse, formatResponse } = require("../utils");
 
-function handleError(err, req, res, next) {
+module.exports = function handleError(err, req, res, next) {
 	let error;
 
 	if (err instanceof ErrorResponse) {
 		error = err;
 	} else if (err.name === "ValidationError") {
 		// mongoose validation error
-		error = new ErrorResponse("Donnée invalide.", 400);
+		const errorMessage = _getValidationErrorMessage(err);
+		error = new ErrorResponse(errorMessage, 400);
 	} else {
 		error = new ErrorResponse("Une erreur s'est produite.", 500);
 	}
 
 	res.status(error.statusCode).json(formatResponse.forError(error.message));
-}
+};
 
-module.exports = handleError;
+function _getValidationErrorMessage(error) {
+	return Object.keys(error.errors).reduce((acc, curr) => {
+		return (acc += `${error.errors[curr].properties.message}. `);
+	}, "");
+}
