@@ -13,7 +13,7 @@ exports.getAllUsers = async function (req, res) {
 	const result = await dbUtils.queryDB(User, {}, pageAndLimit);
 
 	resBody = pageAndLimit
-		? formatResponse.forSuccessWithPagination_2(result)
+		? formatResponse.forSuccessWithPagination(result)
 		: formatResponse.forSuccess(result);
 
 	res.status(200).json(resBody);

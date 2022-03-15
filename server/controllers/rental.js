@@ -14,7 +14,7 @@ exports.getAllRentals = async function (req, res, next) {
 	const result = await dbUtils.queryDB(Rental, {}, pageAndLimit);
 
 	resBody = pageAndLimit
-		? formatResponse.forSuccessWithPagination_2(result)
+		? formatResponse.forSuccessWithPagination(result)
 		: formatResponse.forSuccess(result);
 
 	res.status(200).json(resBody);
