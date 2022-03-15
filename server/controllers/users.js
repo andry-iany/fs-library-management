@@ -1,34 +1,23 @@
-const { formatResponse, ErrorResponse, paginationUtils } = require("../utils");
 const User = require("../models/User");
-
-const { getPageAndLimitIfValid, getMaxPage } = paginationUtils;
-const { forSuccess, forSuccessWithPagination } = formatResponse;
+const {
+	formatResponse,
+	ErrorResponse,
+	paginationUtils,
+	dbUtils,
+} = require("../utils");
 
 exports.getAllUsers = async function (req, res) {
-	const pageAndLimit = getPageAndLimitIfValid(req.query);
-	if (pageAndLimit) {
-		await _getAllUsersPaginated(res, pageAndLimit);
-	} else {
-		await _getAllUsersNonPaginated(res);
-	}
+	let resBody;
+
+	const pageAndLimit = paginationUtils.getPageAndLimitIfValid(req.query);
+	const result = await dbUtils.queryDB(User, {}, pageAndLimit);
+
+	resBody = pageAndLimit
+		? formatResponse.forSuccessWithPagination_2(result)
+		: formatResponse.forSuccess(result);
+
+	res.status(200).json(resBody);
 };
-
-async function _getAllUsersPaginated(res, { _page, _limit }) {
-	const users = await User.find({})
-		.skip((_page - 1) * _limit)
-		.limit(_limit);
-
-	const docsCount = await User.countDocuments();
-	res
-		.status(200)
-		.json(
-			forSuccessWithPagination(users, _page, getMaxPage(docsCount, _limit))
-		);
-}
-async function _getAllUsersNonPaginated(res) {
-	const users = await User.find({});
-	res.status(200).json(forSuccess(users));
-}
 
 exports.register = async function (req, res, next) {
 	const CIN = Number(req.validBody.CIN);
@@ -47,7 +36,7 @@ exports.register = async function (req, res, next) {
 
 	try {
 		const savedUser = await user.save();
-		return res.status(201).json(forSuccess(savedUser));
+		return res.status(201).json(formatResponse.forSuccess(savedUser));
 	} catch (err) {
 		return next(err);
 	}
