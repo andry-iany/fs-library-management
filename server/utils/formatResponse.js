@@ -1,14 +1,13 @@
-exports.formatResponseSuccess = function (data) {
+exports.forSuccess = function (data) {
 	return { data };
 };
-exports.formatResponseSuccessWithPagination = function (
-	data,
-	currentPage,
-	maxPage
-) {
+exports.forSuccessWithPagination = function (data, currentPage, maxPage) {
+	return { data, currentPage, maxPage };
+};
+exports.forSuccessWithPagination_2 = function ({ data, currentPage, maxPage }) {
 	return { data, currentPage, maxPage };
 };
 
-exports.formatResponseError = function (error) {
+exports.forError = function (error) {
 	return { error };
 };
