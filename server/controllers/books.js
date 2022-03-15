@@ -2,8 +2,7 @@ const { Book } = require("../models");
 const { formatResponse, paginationUtils, ErrorResponse } = require("../utils");
 
 const { getPageAndLimitIfValid, getMaxPage } = paginationUtils;
-const { formatResponseSuccess, formatResponseSuccessWithPagination } =
-	formatResponse;
+const { forSuccess, forSuccessWithPagination } = formatResponse;
 
 exports.getAllBooks = async function (req, res) {
 	const pageAndLimit = getPageAndLimitIfValid(req.query);
@@ -23,17 +22,13 @@ async function _getAllBooksPaginated(res, { _page, _limit }) {
 	res
 		.status(200)
 		.json(
-			formatResponseSuccessWithPagination(
-				admins,
-				_page,
-				getMaxPage(docsCount, _limit)
-			)
+			forSuccessWithPagination(admins, _page, getMaxPage(docsCount, _limit))
 		);
 }
 
 async function _getAllBooksNonPaginated(res) {
 	const admins = await Book.find({});
-	res.status(200).json(formatResponseSuccess(admins));
+	res.status(200).json(forSuccess(admins));
 }
 
 exports.addBook = async function (req, res, next) {
@@ -45,5 +40,5 @@ exports.addBook = async function (req, res, next) {
 
 	const book = new Book(req.validBody);
 	const savedBook = await book.save();
-	res.status(201).json(formatResponseSuccess(savedBook));
+	res.status(201).json(forSuccess(savedBook));
 };

@@ -1,7 +1,7 @@
 const { Admin } = require("../models");
 const { ErrorResponse, formatResponse } = require("../utils");
 
-const formatResponseSuccess = formatResponse.formatResponseSuccess;
+const forSuccess = formatResponse.forSuccess;
 
 exports.loginController = async function (req, res, next) {
 	try {
@@ -25,7 +25,5 @@ exports.loginController = async function (req, res, next) {
 
 const sendToken = (admin, statusCode, res) => {
 	const token = admin.getSignedToken();
-	return res
-		.status(statusCode)
-		.json(formatResponseSuccess({ token, role: admin.role }));
+	return res.status(statusCode).json(forSuccess({ token, role: admin.role }));
 };

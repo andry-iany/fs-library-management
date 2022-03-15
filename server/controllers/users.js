@@ -2,8 +2,7 @@ const { formatResponse, ErrorResponse, paginationUtils } = require("../utils");
 const User = require("../models/User");
 
 const { getPageAndLimitIfValid, getMaxPage } = paginationUtils;
-const { formatResponseSuccess, formatResponseSuccessWithPagination } =
-	formatResponse;
+const { forSuccess, forSuccessWithPagination } = formatResponse;
 
 exports.getAllUsers = async function (req, res) {
 	const pageAndLimit = getPageAndLimitIfValid(req.query);
@@ -23,16 +22,12 @@ async function _getAllUsersPaginated(res, { _page, _limit }) {
 	res
 		.status(200)
 		.json(
-			formatResponseSuccessWithPagination(
-				users,
-				_page,
-				getMaxPage(docsCount, _limit)
-			)
+			forSuccessWithPagination(users, _page, getMaxPage(docsCount, _limit))
 		);
 }
 async function _getAllUsersNonPaginated(res) {
 	const users = await User.find({});
-	res.status(200).json(formatResponseSuccess(users));
+	res.status(200).json(forSuccess(users));
 }
 
 exports.register = async function (req, res, next) {
@@ -52,7 +47,7 @@ exports.register = async function (req, res, next) {
 
 	try {
 		const savedUser = await user.save();
-		return res.status(201).json(formatResponseSuccess(savedUser));
+		return res.status(201).json(forSuccess(savedUser));
 	} catch (err) {
 		return next(err);
 	}

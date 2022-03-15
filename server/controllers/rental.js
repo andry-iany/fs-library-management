@@ -3,8 +3,7 @@ const { formatResponse, ErrorResponse, paginationUtils } = require("../utils");
 const mongoose = require("mongoose");
 
 const { getPageAndLimitIfValid, getMaxPage } = paginationUtils;
-const { formatResponseSuccess, formatResponseSuccessWithPagination } =
-	formatResponse;
+const { forSuccess, forSuccessWithPagination } = formatResponse;
 
 exports.getAllRentals = async function (req, res, next) {
 	let rentals = null;
@@ -19,7 +18,7 @@ exports.getAllRentals = async function (req, res, next) {
 		res
 			.status(200)
 			.json(
-				formatResponseSuccessWithPagination(
+				forSuccessWithPagination(
 					rentals,
 					pageAndLimit._page,
 					getMaxPage(docsCount, pageAndLimit._limit)
@@ -27,7 +26,7 @@ exports.getAllRentals = async function (req, res, next) {
 			);
 	} else {
 		rentals = await Rental.find({});
-		res.status(200).json(formatResponseSuccess(rentals));
+		res.status(200).json(forSuccess(rentals));
 	}
 };
 
@@ -39,7 +38,7 @@ exports.getRentalByUserId = async function (req, res, next) {
 		rental = await Rental.findOne({ userId });
 	}
 
-	return res.status(200).json(formatResponseSuccess(rental));
+	return res.status(200).json(forSuccess(rental));
 };
 
 exports.returnBook = async function (req, res, next) {
@@ -70,7 +69,7 @@ exports.returnBook = async function (req, res, next) {
 		await rental.save();
 	}
 
-	res.status(200).json(formatResponseSuccess(rental));
+	res.status(200).json(forSuccess(rental));
 };
 
 exports.rentBook = async function (req, res, next) {
@@ -99,7 +98,7 @@ exports.rentBook = async function (req, res, next) {
 		await _validateRental(newRental);
 
 		const savedRental = await newRental.save();
-		return res.status(200).json(formatResponseSuccess(savedRental));
+		return res.status(200).json(forSuccess(savedRental));
 	} catch (err) {
 		return next(new ErrorResponse(err.message, 400));
 	}
