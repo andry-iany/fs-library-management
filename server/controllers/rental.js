@@ -33,15 +33,7 @@ exports.returnBook = async function (req, res, next) {
 	if (!rental)
 		return next(new ErrorResponse("Aucun emprunt correspondant.", 400));
 
-	const ISBNsToReturn = [...req.validBody.ISBN];
-	const ISBNsInRental = [...rental.ISBN];
-
-	ISBNsToReturn.forEach((ISBN) => {
-		const index = ISBNsInRental.findIndex((book) => book === ISBN);
-		if (index >= 0) ISBNsInRental.splice(index, 1);
-	});
-
-	rental.ISBN = ISBNsInRental;
+	_removeBooksFromRental(rental, req.validBody.ISBN);
 
 	if (rental.ISBN.length === 0) {
 		await Rental.deleteOne({ _id: rental.id });
@@ -52,6 +44,17 @@ exports.returnBook = async function (req, res, next) {
 
 	res.status(200).json(formatResponse.forSuccess(rental));
 };
+
+function _removeBooksFromRental(rental, booksToRemove = []) {
+	const booksInRental = [...rental.ISBN];
+
+	for (let bookToRemove of booksToRemove) {
+		const index = booksInRental.findIndex((book) => book === bookToRemove);
+		if (index >= 0) booksInRental.splice(index, 1);
+	}
+
+	rental.ISBN = booksInRental;
+}
 
 exports.rentBook = async function (req, res, next) {
 	try {
