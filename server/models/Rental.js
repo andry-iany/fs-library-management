@@ -55,14 +55,6 @@ async function _validateISBN(value) {
 
 RentalSchema.statics.MAX_ALLOWED_TO_RENT = MAX_ALLOWED_TO_RENT;
 
-RentalSchema.methods.isValid = function () {
-	return (
-		mongoose.isValidObjectId(this.userId) &&
-		this.bookIds.length <= RentalSchema.MAX_ALLOWED_TO_RENT &&
-		this.bookIds.every((bookId) => mongoose.isValidObjectId(bookId))
-	);
-};
-
 const Rental = mongoose.model("Rental", RentalSchema);
 
 module.exports = Rental;
