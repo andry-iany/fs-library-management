@@ -11,10 +11,12 @@ const UserSchema = new mongoose.Schema({
 	dateDeNaissance: Date,
 	adresse: AddressSchema,
 	CIN: {
-		type: Number,
+		type: String,
 		validate: {
-			validator: (value) => String(value).length === 12,
-			message: "Donnée invalide",
+			validator: (value) => {
+				return String(value).length === 12 && !isNaN(Number(value));
+			},
+			message: "CIN invalide",
 		},
 		required: true,
 		unique: true,
