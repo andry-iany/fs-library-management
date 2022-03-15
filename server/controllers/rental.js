@@ -1,23 +1,14 @@
 const mongoose = require("mongoose");
 const { Book, Rental } = require("../models");
-const {
-	formatResponse,
-	ErrorResponse,
-	paginationUtils,
-	dbUtils,
-} = require("../utils");
+const { handleGetWithOptionalPagination } = require("./_shared");
+const { formatResponse, ErrorResponse } = require("../utils");
 
 exports.getAllRentals = async function (req, res, next) {
-	let resBody;
-
-	const pageAndLimit = paginationUtils.getPageAndLimitIfValid(req.query);
-	const result = await dbUtils.queryDB(Rental, {}, pageAndLimit);
-
-	resBody = pageAndLimit
-		? formatResponse.forSuccessWithPagination(result)
-		: formatResponse.forSuccess(result);
-
-	res.status(200).json(resBody);
+	req.queryDBArgs = {
+		Model: Rental,
+		filter: {},
+	};
+	return handleGetWithOptionalPagination(req, res);
 };
 
 exports.getRentalByUserId = async function (req, res, next) {
