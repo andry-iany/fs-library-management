@@ -1,5 +1,9 @@
 const { admin: adminController } = require("../controllers");
-const { authenticate, authorize, validateRequest } = require("../middlewares");
+const {
+	authenticate,
+	authorize,
+	checkRequiredProps,
+} = require("../middlewares");
 const express = require("express");
 
 const router = express.Router();
@@ -16,7 +20,7 @@ router.route("/delete/:adminId").delete(adminController.deleteAdmin);
 
 router
 	.route("/register")
-	.post(validateRequest("nom", "password", "role", "email"))
+	.post(checkRequiredProps("nom", "password", "role", "email"))
 	.post(adminController.register);
 
 module.exports = router;

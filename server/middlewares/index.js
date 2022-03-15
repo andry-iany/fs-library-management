@@ -1,6 +1,6 @@
 module.exports = {
 	error: require("./error"),
-	validateRequest: require("./validateRequest"),
+	checkRequiredProps: require("./checkRequiredProps"),
 	authenticate: require("./authenticate"),
 	authorize: require("./authorize"),
 	notFound: require("./404"),

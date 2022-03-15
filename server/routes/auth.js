@@ -1,12 +1,12 @@
 const { auth: authController } = require("../controllers");
-const { validateRequest } = require("../middlewares");
+const { checkRequiredProps } = require("../middlewares");
 const express = require("express");
 
 const router = express.Router();
 
 router
 	.route("/login")
-	.post(validateRequest("email", "password"))
+	.post(checkRequiredProps("email", "password"))
 	.post(authController.loginController);
 
 module.exports = router;
