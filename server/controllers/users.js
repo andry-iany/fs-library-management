@@ -1,22 +1,13 @@
 const User = require("../models/User");
-const {
-	formatResponse,
-	ErrorResponse,
-	paginationUtils,
-	dbUtils,
-} = require("../utils");
+const { handleGetWithOptionalPagination } = require("./_shared");
+const { formatResponse, ErrorResponse } = require("../utils");
 
 exports.getAllUsers = async function (req, res) {
-	let resBody;
-
-	const pageAndLimit = paginationUtils.getPageAndLimitIfValid(req.query);
-	const result = await dbUtils.queryDB(User, {}, pageAndLimit);
-
-	resBody = pageAndLimit
-		? formatResponse.forSuccessWithPagination(result)
-		: formatResponse.forSuccess(result);
-
-	res.status(200).json(resBody);
+	req.queryDBArgs = {
+		Model: User,
+		filter: {},
+	};
+	return handleGetWithOptionalPagination(req, res);
 };
 
 exports.register = async function (req, res, next) {
