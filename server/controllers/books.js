@@ -18,6 +18,10 @@ exports.addBook = async function (req, res, next) {
 	}
 
 	const book = new Book(req.validBody);
-	const savedBook = await book.save();
-	res.status(201).json(formatResponse.forSuccess(savedBook));
+	try {
+		const savedBook = await book.save();
+		res.status(201).json(formatResponse.forSuccess(savedBook));
+	} catch (err) {
+		return next(err);
+	}
 };
