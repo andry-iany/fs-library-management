@@ -1,41 +1,24 @@
-const { formatResponse, paginationUtils, ErrorResponse } = require("../utils");
 const { Admin } = require("../models");
 const mongoose = require("mongoose");
-
-const { getPageAndLimitIfValid, getMaxPage } = paginationUtils;
-const { formatResponseSuccess, formatResponseSuccessWithPagination } =
-	formatResponse;
+const {
+	formatResponse,
+	paginationUtils,
+	dbUtils,
+	ErrorResponse,
+} = require("../utils");
 
 exports.getAllAdmins = async function (req, res) {
-	const pageAndLimit = getPageAndLimitIfValid(req.query);
-	if (pageAndLimit) {
-		await _getAllAdminsPaginated(res, pageAndLimit);
-	} else {
-		await _getAllAdminsNonPaginated(res);
-	}
+	let resBody;
+
+	const pageAndLimit = paginationUtils.getPageAndLimitIfValid(req.query);
+	const result = await dbUtils.queryDB(Admin, {}, pageAndLimit);
+
+	resBody = pageAndLimit
+		? formatResponse.forSuccessWithPagination_2(result)
+		: formatResponse.forSuccess(result);
+
+	res.status(200).json(resBody);
 };
-
-async function _getAllAdminsPaginated(res, { _page, _limit }) {
-	const admins = await Admin.find({})
-		.skip((_page - 1) * _limit)
-		.limit(_limit);
-
-	const docsCount = await Admin.countDocuments();
-	res
-		.status(200)
-		.json(
-			formatResponseSuccessWithPagination(
-				admins,
-				_page,
-				getMaxPage(docsCount, _limit)
-			)
-		);
-}
-
-async function _getAllAdminsNonPaginated(res) {
-	const admins = await Admin.find({});
-	res.status(200).json(formatResponseSuccess(admins));
-}
 
 exports.getAdmin = async function (req, res, next) {
 	const { adminId } = req.params;
@@ -50,7 +33,7 @@ exports.getAdmin = async function (req, res, next) {
 			new ErrorResponse("Le responsable spécifié n'existe pas.", 400)
 		);
 
-	return res.status(200).json(formatResponseSuccess(admin));
+	return res.status(200).json(formatResponse.forSuccess(admin));
 };
 
 exports.deleteAdmin = async function (req, res, next) {
@@ -66,7 +49,7 @@ exports.deleteAdmin = async function (req, res, next) {
 			new ErrorResponse("Le responsable spécifié n'existe pas.", 400)
 		);
 
-	return res.status(200).json(formatResponseSuccess(admin));
+	return res.status(200).json(formatResponse.forSuccess(admin));
 };
 
 exports.editAdmin = async function (req, res, next) {
@@ -89,7 +72,7 @@ exports.editAdmin = async function (req, res, next) {
 
 	try {
 		const editedAdmin = await admin.save();
-		return res.status(200).json(formatResponseSuccess(editedAdmin));
+		return res.status(200).json(formatResponse.forSuccess(editedAdmin));
 	} catch (err) {
 		console.log(err);
 		return next(err);
@@ -107,7 +90,7 @@ exports.register = async function (req, res, next) {
 
 	try {
 		const savedAdmin = await admin.save();
-		return res.status(201).json(formatResponseSuccess(savedAdmin));
+		return res.status(201).json(formatResponse.forSuccess(savedAdmin));
 	} catch (err) {
 		return next(err);
 	}
