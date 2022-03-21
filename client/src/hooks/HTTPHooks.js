@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { authInfo } from "../utils";
 
-const apiRoot = "http://localhost:8080";
+const apiRoot = process.env.REACT_APP_ROOT_API;
 
 function usePost() {
 	const result = useMakeHttpRequest("post");
