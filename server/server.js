@@ -6,6 +6,7 @@ async function startServer() {
 	const port = process.env.PORT || 8080;
 
 	await db.connect();
+	await db.createFirstManagerIfNeeded();
 
 	middlewares.applyPreRoutesMiddlewares(app);
 	routes.applyRoutes(app);
